@@ -1,7 +1,7 @@
 ---
 title: "Project 2"
 subtitle: "Proposal"
-authors: ""
+authors: "Kiana Fields"
 format: html
 editor: visual
 ---
@@ -14,17 +14,28 @@ editor: visual
 library(tidyverse)
 ```
 
+## Goals
+
+My high level goal is to create an animated spatio-temporal visualization of wildfires in California comparing land management agencies. This will be a map of wildfires in California (with land management agency boundaries mapped), animated to reflect wildfires over time.
+
+\
+California is known to have intense wildfire seasons, that can have devastating impacts both to communities immediately impacted by the burn through destruction of property and lives lost, as well as far reaching consequences as smoke impacts other communities as well. There are a variety of public land managers in California such as the Bureau of Land Management (BLM), California State Parks, United States Department of the Interior, the US Forest Service (USFS), California State Lands Commission, and the National Park Service (NPS). In order to develop effective management strategies and effectively allocate resources, it is necessary to identify relevant stakeholders. My project hopes to address one aspect of this by considering which agencies are most directly impacted by wildfires. Additionally, these different land management agencies employ different wildfire mitigation strategies as they serve different functions; In order to assess the efficiency of varying wildfire mitigation strategies it is useful to consider the prevalence of wildfires across these agencies. It is ultimately important to recognize the complexity of the issue of wildfires and acknowledge the limitations of a mapping project like this in articulating the relationship between land management strategy and the reality of wildfires.
+
 ## Dataset
 
 ```{r load-data}
 #| label: load-data
 #| message: false
-
+#| 
 ## read data 
 ```
 
-
-## Reason for Choosing this Dataset
-
+I will be using spatial data of land management boundaries and a dataset containing California wildfires.
 
 ## Questions and Analysis Plan
+
+I will first create the animated spatio-temporal visualization.
+
+Then I will consider the relationship between lang management agency (BLM, USFS, etc) and wildfires by comparing the frequency/intensity of wildfires across different land management agencies.
+
+I will also consider how this changes over time by comparing across wildfire seasons.
