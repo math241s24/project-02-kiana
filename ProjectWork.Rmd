@@ -1,2 +1,15 @@
 
 #Workspace for Project 2
+
+```{r}
+library(readr)
+library(tidyverse)
+library(sf)
+library(tigris)
+
+
+fireData <- read_csv("Data/BLM_Natl_Fire_Perimeters_Polygon_2107599102123017372.csv")
+
+
+```
+
