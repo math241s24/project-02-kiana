@@ -21,6 +21,12 @@ My high level goal is to create an animated spatio-temporal visualization of wil
 \
 California is known to have intense wildfire seasons, that can have devastating impacts both to communities immediately impacted by the burn through destruction of property and lives lost, as well as far reaching consequences as smoke impacts other communities as well. There are a variety of public land managers in California such as the Bureau of Land Management (BLM), California State Parks, United States Department of the Interior, the US Forest Service (USFS), California State Lands Commission, and the National Park Service (NPS). In order to develop effective management strategies and effectively allocate resources, it is necessary to identify relevant stakeholders. My project hopes to address one aspect of this by considering which agencies are most directly impacted by wildfires. Additionally, these different land management agencies employ different wildfire mitigation strategies as they serve different functions; In order to assess the efficiency of varying wildfire mitigation strategies it is useful to consider the prevalence of wildfires across these agencies. It is ultimately important to recognize the complexity of the issue of wildfires and acknowledge the limitations of a mapping project like this in articulating the relationship between land management strategy and the reality of wildfires.
 
+## Questions for Analysis
+
+I will consider the relationship between land management agency (BLM, USFS, etc) and wildfires by comparing the frequency and intensity of wildfires (by area burned) across different land management agencies.
+
+I will also consider how this changes over time by comparing across wildfire seasons.
+
 ## Dataset
 
 ```{r load-data}
@@ -30,12 +36,56 @@ California is known to have intense wildfire seasons, that can have devastating 
 ## read data 
 ```
 
-I will be using spatial data of land management boundaries and a dataset containing California wildfires.
+I will be using spatial data of land management boundaries from the Protected Areas Database (PAD-US) filtered for just California. I will also be incorporating the WFIGS Interagency Fire Perimeters dataset from the National Interagency Fire Center, also filtered for just California.
 
-## Questions and Analysis Plan
+## Weekly Plan
 
-I will first create the animated spatio-temporal visualization.
+Week 10: Submit Project Proposal
 
-Then I will consider the relationship between lang management agency (BLM, USFS, etc) and wildfires by comparing the frequency/intensity of wildfires across different land management agencies.
+-   Create necessary files
 
-I will also consider how this changes over time by comparing across wildfire seasons.
+-   Submit project proposal
+
+Week 11: Peer Review of Proposals
+
+-   Clean up dataset
+
+-   Produce visualizations and analysis
+
+-   Begin animated map
+
+-   Update proposal following peer review
+
+Week 12: Peer Review of Code
+
+-   Finish animated map
+
+-   Update code following peer review
+
+-   Create project presentation
+
+Week 13: Final Presentations
+
+-   Complete project writeup
+
+-   Submit writeup by May 9
+
+## Repository Organization
+
+My repository contains the following:
+
+-   Project Proposal: proposal.qmd
+
+-   Project Presentation: presentation.qmd
+
+-   About: about.qmd
+
+-   Project Writeup: index.qmd
+
+-   Website: \_quarto.yml
+
+-   Data Folder
+
+    -   Contains datasets (wildfire perimeters, land management agency boundaries, merged dataset)
+
+    -   Contains R file for data cleanup
