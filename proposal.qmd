@@ -84,6 +84,8 @@ My repository contains the following:
 
 -   Website: \_quarto.yml
 
+-   Project Work: ProjectWork.Rmd
+
 -   Data Folder
 
     -   Contains datasets (wildfire perimeters, land management agency boundaries, merged dataset)
