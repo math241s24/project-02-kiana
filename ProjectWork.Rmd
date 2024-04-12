@@ -4,12 +4,33 @@
 ```{r}
 library(readr)
 library(tidyverse)
+library(tidycensus)
+library(flextable)
 library(sf)
 library(tigris)
-
-
-fireData <- read_csv("Data/BLM_Natl_Fire_Perimeters_Polygon_2107599102123017372.csv")
-
-
+library(tmap)
+library(RColorBrewer)
 ```
 
+
+```{r}
+PAD_CA_sf <- st_as_sf(PAD_CA, wkt = "WKT")
+
+ggplot() +
+  geom_sf(data = PAD_CA_sf, aes(fill = mang_level)) +
+  labs(fill = "Management Level") +
+  theme_void()
+
+
+fires_sf <- fires %>%
+  filter(!is.na(WKT)) %>%
+  st_as_sf(wkt = "WKT")
+
+fires_sf_2010 <- fires_sf %>% 
+  filter(discover_yr == 2010)
+
+ggplot() +
+  geom_sf(data = fires_sf, aes(fill = cause_gen)) +
+  labs(fill = "Incident Cause (general)") +
+  theme_void()
+```
