@@ -30,7 +30,7 @@ fires_sf_2010 <- fires_sf %>%
   filter(discover_yr == 2010)
 
 ggplot() +
-  geom_sf(data = fires_sf, aes(fill = cause_gen)) +
+  geom_sf(data = fires_sf, aes(fill = discover_yr)) +
   labs(fill = "Incident Cause (general)") +
   theme_void()
 ```
