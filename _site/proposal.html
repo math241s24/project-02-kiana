@@ -152,9 +152,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#dataset" id="toc-dataset" class="nav-link active" data-scroll-target="#dataset">Dataset</a></li>
-  <li><a href="#reason-for-choosing-this-dataset" id="toc-reason-for-choosing-this-dataset" class="nav-link" data-scroll-target="#reason-for-choosing-this-dataset">Reason for Choosing this Dataset</a></li>
-  <li><a href="#questions-and-analysis-plan" id="toc-questions-and-analysis-plan" class="nav-link" data-scroll-target="#questions-and-analysis-plan">Questions and Analysis Plan</a></li>
+  <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#questions-for-analysis" id="toc-questions-for-analysis" class="nav-link" data-scroll-target="#questions-for-analysis">Questions for Analysis</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#weekly-plan" id="toc-weekly-plan" class="nav-link" data-scroll-target="#weekly-plan">Weekly Plan</a></li>
+  <li><a href="#repository-organization" id="toc-repository-organization" class="nav-link" data-scroll-target="#repository-organization">Repository Organization</a></li>
   </ul>
 </nav>
     </div>
@@ -174,7 +176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p> </p>
+             <p>Kiana Fields </p>
           </div>
   </div>
     
@@ -188,17 +190,66 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="goals" class="level2">
+<h2 class="anchored" data-anchor-id="goals">Goals</h2>
+<p>My high level goal is to create an animated spatio-temporal visualization of wildfires in California comparing land management agencies. This will be a map of wildfires in California (with land management agency boundaries mapped), animated to reflect wildfires over time.</p>
+<p><br>
+California is known to have intense wildfire seasons, that can have devastating impacts both to communities immediately impacted by the burn through destruction of property and lives lost, as well as far reaching consequences as smoke impacts other communities as well. There are a variety of public land managers in California such as the Bureau of Land Management (BLM), California State Parks, United States Department of the Interior, the US Forest Service (USFS), California State Lands Commission, and the National Park Service (NPS). In order to develop effective management strategies and effectively allocate resources, it is necessary to identify relevant stakeholders. My project hopes to address one aspect of this by considering which agencies are most directly impacted by wildfires. Additionally, these different land management agencies employ different wildfire mitigation strategies as they serve different functions; In order to assess the efficiency of varying wildfire mitigation strategies it is useful to consider the prevalence of wildfires across these agencies. It is ultimately important to recognize the complexity of the issue of wildfires and acknowledge the limitations of a mapping project like this in articulating the relationship between land management strategy and the reality of wildfires.</p>
+</section>
+<section id="questions-for-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="questions-for-analysis">Questions for Analysis</h2>
+<p>I will consider the relationship between land management agency (BLM, USFS, etc) and wildfires by comparing the frequency and intensity of wildfires (by area burned) across different land management agencies.</p>
+<p>I will also consider how this changes over time by comparing across wildfire seasons.</p>
+</section>
 <section id="dataset" class="level2">
 <h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## read data </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>I will be using spatial data of land management boundaries from the Protected Areas Database (PAD-US) filtered for just California. I will also be incorporating the WFIGS Interagency Fire Perimeters dataset from the National Interagency Fire Center, also filtered for just California.</p>
 </section>
-<section id="reason-for-choosing-this-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="reason-for-choosing-this-dataset">Reason for Choosing this Dataset</h2>
+<section id="weekly-plan" class="level2">
+<h2 class="anchored" data-anchor-id="weekly-plan">Weekly Plan</h2>
+<p>Week 10: Submit Project Proposal</p>
+<ul>
+<li><p>Create necessary files</p></li>
+<li><p>Submit project proposal</p></li>
+</ul>
+<p>Week 11: Peer Review of Proposals</p>
+<ul>
+<li><p>Clean up dataset</p></li>
+<li><p>Produce visualizations and analysis</p></li>
+<li><p>Begin animated map</p></li>
+<li><p>Update proposal following peer review</p></li>
+</ul>
+<p>Week 12: Peer Review of Code</p>
+<ul>
+<li><p>Finish animated map</p></li>
+<li><p>Update code following peer review</p></li>
+<li><p>Create project presentation</p></li>
+</ul>
+<p>Week 13: Final Presentations</p>
+<ul>
+<li><p>Complete project writeup</p></li>
+<li><p>Submit writeup by May 9</p></li>
+</ul>
 </section>
-<section id="questions-and-analysis-plan" class="level2">
-<h2 class="anchored" data-anchor-id="questions-and-analysis-plan">Questions and Analysis Plan</h2>
+<section id="repository-organization" class="level2">
+<h2 class="anchored" data-anchor-id="repository-organization">Repository Organization</h2>
+<p>My repository contains the following:</p>
+<ul>
+<li><p>Project Proposal: proposal.qmd</p></li>
+<li><p>Project Presentation: presentation.qmd</p></li>
+<li><p>About: about.qmd</p></li>
+<li><p>Project Writeup: index.qmd</p></li>
+<li><p>Website: _quarto.yml</p></li>
+<li><p>Project Work: ProjectWork.Rmd</p></li>
+<li><p>Data Folder</p>
+<ul>
+<li><p>Contains datasets (wildfire perimeters, land management agency boundaries, merged dataset)</p></li>
+<li><p>Contains R file for data cleanup</p></li>
+</ul></li>
+</ul>
 
 
 </section>
