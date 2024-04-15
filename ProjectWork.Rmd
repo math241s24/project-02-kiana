@@ -13,24 +13,50 @@ library(RColorBrewer)
 ```
 
 
+Initial mapping of datasets independently
 ```{r}
-PAD_CA_sf <- st_as_sf(PAD_CA, wkt = "WKT")
 
 ggplot() +
   geom_sf(data = PAD_CA_sf, aes(fill = mang_level)) +
   labs(fill = "Management Level") +
   theme_void()
 
-
-fires_sf <- fires %>%
-  filter(!is.na(WKT)) %>%
-  st_as_sf(wkt = "WKT")
-
-fires_sf_2010 <- fires_sf %>% 
-  filter(discover_yr == 2010)
-
 ggplot() +
   geom_sf(data = fires_sf, aes(fill = discover_yr)) +
-  labs(fill = "Incident Cause (general)") +
+  labs(fill = "Year") +
+  theme_void()
+
+ggplot() +
+  geom_sf(data = fires_sf, aes(fill = factor(discover_yr))) +
+  labs(fill = "Year") +
+  scale_fill_manual(values = rainbow(length(unique(fires_sf$discover_yr)))) +
   theme_void()
 ```
+
+Animation
+```{r}
+library(countdown)
+library(gt)
+library(readxl)
+library(gganimate)
+library(gifski)
+library(knitr)
+library(kableExtra)
+library(transformr)
+```
+
+```{r}
+#static plot
+p <- ggplot() +
+  geom_sf(data = fires_sf, aes(fill = factor(discover_yr))) +
+  labs(fill = "Year") +
+  theme_void() 
+
+# adding animation
+p + transition_states(discover_yr, transition_length = 1, state_length = 1)
+
+animate(p)
+
+```
+
+

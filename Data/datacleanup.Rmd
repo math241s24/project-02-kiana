@@ -45,6 +45,7 @@ fires <- fires %>%
          acres_total = total_reported_acres
          )
 
+
 ```
 
 
@@ -79,6 +80,22 @@ PAD_CA <- PAD_CA %>%
          unit_name = Unit_Nm,
          designation = Des_Tp
          )
+
+```
+
+Making Spatial
+```{r}
+fires_sf <- fires %>%
+  filter(!is.na(WKT)) %>%
+  st_as_sf(wkt = "WKT")
+
+PAD_CA_sf <- st_as_sf(PAD_CA, wkt = "WKT")
+```
+
+
+
+Merging Datasets
+```{r}
 
 ```
 
