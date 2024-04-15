@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Team">
 
-<title>Project 2 - Project title</title>
+<title>Project 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -85,11 +118,11 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Project</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./proposal.html" rel="" target="">
+    <a class="nav-link active" href="./proposal.html" rel="" target="" aria-current="page">
  <span class="menu-text">Proposal</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./presentation.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./presentation.html" rel="" target="">
  <span class="menu-text">Presentation</span></a>
   </li>  
   <li class="nav-item">
@@ -99,7 +132,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/math241s24/project-02" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/math241s24/project-02-kiana" rel="" target=""><i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
@@ -115,15 +148,25 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="presentation.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#questions-for-analysis" id="toc-questions-for-analysis" class="nav-link" data-scroll-target="#questions-for-analysis">Questions for Analysis</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#weekly-plan" id="toc-weekly-plan" class="nav-link" data-scroll-target="#weekly-plan">Weekly Plan</a></li>
+  <li><a href="#repository-organization" id="toc-repository-organization" class="nav-link" data-scroll-target="#repository-organization">Repository Organization</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Project title</h1>
-<p class="subtitle lead">Project 2</p>
+<h1 class="title">Project 2</h1>
+<p class="subtitle lead">Proposal</p>
 </div>
 
 
@@ -133,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Team </p>
+             <p>Kiana Fields </p>
           </div>
   </div>
     
@@ -144,8 +187,72 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="goals" class="level2">
+<h2 class="anchored" data-anchor-id="goals">Goals</h2>
+<p>My high level goal is to create an animated spatio-temporal visualization of wildfires in California comparing land management agencies. This will be a map of wildfires in California (with land management agency boundaries mapped), animated to reflect wildfires over time.</p>
+<p><br>
+California is known to have intense wildfire seasons, that can have devastating impacts both to communities immediately impacted by the burn through destruction of property and lives lost, as well as far reaching consequences as smoke impacts other communities as well. There are a variety of public land managers in California such as the Bureau of Land Management (BLM), California State Parks, United States Department of the Interior, the US Forest Service (USFS), California State Lands Commission, and the National Park Service (NPS). In order to develop effective management strategies and effectively allocate resources, it is necessary to identify relevant stakeholders. My project hopes to address one aspect of this by considering which agencies are most directly impacted by wildfires. Additionally, these different land management agencies employ different wildfire mitigation strategies as they serve different functions; In order to assess the efficiency of varying wildfire mitigation strategies it is useful to consider the prevalence of wildfires across these agencies. It is ultimately important to recognize the complexity of the issue of wildfires and acknowledge the limitations of a mapping project like this in articulating the relationship between land management strategy and the reality of wildfires.</p>
+</section>
+<section id="questions-for-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="questions-for-analysis">Questions for Analysis</h2>
+<p>I will consider the relationship between land management agency (BLM, USFS, etc) and wildfires by comparing the frequency and intensity of wildfires (by area burned) across different land management agencies.</p>
+<p>I will also consider how this changes over time by comparing across wildfire seasons.</p>
+</section>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## read data </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I will be using spatial data of land management boundaries from the Protected Areas Database (PAD-US) filtered for just California. I will also be incorporating the WFIGS Interagency Fire Perimeters dataset from the National Interagency Fire Center, also filtered for just California.</p>
+</section>
+<section id="weekly-plan" class="level2">
+<h2 class="anchored" data-anchor-id="weekly-plan">Weekly Plan</h2>
+<p>Week 10: Submit Project Proposal</p>
+<ul>
+<li><p>Create necessary files</p></li>
+<li><p>Submit project proposal</p></li>
+</ul>
+<p>Week 11: Peer Review of Proposals</p>
+<ul>
+<li><p>Clean up dataset</p></li>
+<li><p>Produce visualizations and analysis</p></li>
+<li><p>Begin animated map</p></li>
+<li><p>Update proposal following peer review</p></li>
+</ul>
+<p>Week 12: Peer Review of Code</p>
+<ul>
+<li><p>Finish animated map</p></li>
+<li><p>Update code following peer review</p></li>
+<li><p>Create project presentation</p></li>
+</ul>
+<p>Week 13: Final Presentations</p>
+<ul>
+<li><p>Complete project writeup</p></li>
+<li><p>Submit writeup by May 9</p></li>
+</ul>
+</section>
+<section id="repository-organization" class="level2">
+<h2 class="anchored" data-anchor-id="repository-organization">Repository Organization</h2>
+<p>My repository contains the following:</p>
+<ul>
+<li><p>Project Proposal: proposal.qmd</p></li>
+<li><p>Project Presentation: presentation.qmd</p></li>
+<li><p>About: about.qmd</p></li>
+<li><p>Project Writeup: index.qmd</p></li>
+<li><p>Website: _quarto.yml</p></li>
+<li><p>Project Work: ProjectWork.Rmd</p></li>
+<li><p>Data Folder</p>
+<ul>
+<li><p>Contains datasets (wildfire perimeters, land management agency boundaries, merged dataset)</p></li>
+<li><p>Contains R file for data cleanup</p></li>
+</ul></li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
