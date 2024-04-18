@@ -1,4 +1,5 @@
 #question: How do i save the updated/wrangled datasets as new csv's so i can call them easily in the project work file?
+#how to set it up so instead of my local locations its just here?
 
 ```{r}
 library(readr)
@@ -15,7 +16,7 @@ Fire Dataset Cleanup:
 - removing unneccesary variables
 - renaming variables
 ```{r}
-fires <- read_csv("~/Rstudio/DataScience/project-02-kiana/Data/Original_Data/fires.csv", 
+fires <- read_csv("../Data/Original_Data/fires.csv", 
                   col_types = cols(COMMENT = col_skip(),
                                    last_edited_user = col_skip(),
                                    last_edited_date = col_skip(),
@@ -66,7 +67,7 @@ PAD_CA Dataset Cleanup:
 - removing unneeded variables
 - renaming variables
 ```{r}
-PAD_CA <- read_csv("~/Rstudio/DataScience/project-02-kiana/Data/PAD_CA.csv", 
+PAD_CA <- read_csv("../Data/PAD_CA.csv", 
                   col_types = cols(FeatClass = col_skip(),
                                    Category = col_skip(),
                                    Loc_Own = col_skip(),
@@ -117,7 +118,7 @@ Merging Datasets:
 fires and land management
 ```{r}
 #Josie Griffin merged them in GIS for me :)
-fire_location <- read_csv("~/Rstudio/DataScience/project-02-kiana/Data/Original_Data/fire_location_data.csv")
+fire_location <- read_csv("../Data/Original_Data/fire_location_data.csv")
 
 fire_location_cleanup <- c("point_of_origin_jurisdictional_unit_identifier", 
                           "point_of_origin_protecting_unit_identifier",
