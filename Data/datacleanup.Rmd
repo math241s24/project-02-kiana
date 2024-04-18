@@ -72,88 +72,129 @@ PAD_CA <- read_csv("~/Rstudio/DataScience/project-02-kiana/Data/PAD_CA.csv",
                                    Loc_Ds = col_skip(),
                                    Loc_Nm = col_skip(),
                                    Src_Date = col_skip(),
+                                   Unit_Nm = col_skip(),
+                                   Pub_Access = col_skip(),
+                                   GAP_Sts = col_skip(),
+                                   GAPCdSrc = col_skip(),
+                                   GAPCdDt = col_skip()
                                    ))
 
 PAD_CA <- PAD_CA %>% 
   rename(mang_level = Mang_Type,
          mang_name = Mang_Name,
-         unit_name = Unit_Nm,
          designation = Des_Tp
          )
 
 ```
 
 Making Spatial
+-reducing management types down to American Indian Lands, Federal, Local Government, and State
 ```{r}
 fires_sf <- fires %>%
   filter(!is.na(WKT)) %>%
   st_as_sf(wkt = "WKT")
 
-PAD_CA_sf <- st_as_sf(PAD_CA, wkt = "WKT")
+PAD_CA_sf <- PAD_CA %>%
+  filter(!is.na(WKT)) %>%
+  filter(mang_level != "Unknown") %>% 
+  filter(mang_level != "Private") %>% 
+  filter(mang_level != "Non-Governmental Organization") %>% 
+  mutate(mang_level = case_when(
+    mang_level == "Regional Agency Special District" ~ "Local Government",
+    mang_level == "Joint" ~ "Local Government",
+    TRUE ~ mang_level
+  )) %>% 
+  st_as_sf(wkt = "WKT") 
+
+
 ```
 
 
-
-Merging Datasets
+Merging Datasets:
+fires and land management
 ```{r}
-
+fire_location <- read_csv("~/Rstudio/DataScience/project-02-kiana/Data/fire_location_data.csv")
 ```
 
 
-
-
-Things I originally removed that broke my maps idrk :/
+Merging Datasets:
+fires and oregon counties
 ```{r}
-last_edite = col_skip(),
-                                   last_edi_1 = col_skip(),
-                                   fire_discovered_date_estimated_flag = col_skip(),
-                                   fire_control_date_estimated_flag = col_skip(),
-                                   collection_method = col_skip(),
-                                   complex_name = col_skip(),
-                                   
-                                   administrative_state_code = col_skip(),
-                                   
-                                   
-                                   
-                                   fire_discovered_calendar_year = col_skip(),
-                                   fire_discovered_date = col_skip(),
-                                   FIRE_DSC_2 = col_skip(),
-                                   FIRE_CNT_1 = col_skip(),
-                                   fire_control_date = col_skip(),
-                                   
-                                   CREATE_DAT = col_skip(),
-                                   CREATE_BY = col_skip(),
-                                   MODIFY_DAT = col_skip(),
-                                   MODIFY_BY = col_skip(),
-                                   created_us = col_skip(),
-                                   created_da = col_skip(),
-                                   ADMIN_ST = col_skip(),
-                                   FIRE_CAUSE = col_skip(),
-                                   IRWIN_ID = col_skip(),
-                                   TOTAL_RPT_ = col_skip(),
-                                   ADM_UNIT_C = col_skip(),
-                                   UNQE_FIRE_ = col_skip(),
-                                   Shape__Are = col_skip(),
-                                   Shape__Len = col_skip(),
-                                   gis_acres = col_skip(),
-                                   GlobalID = col_skip(),
-                                   Original_G = col_skip(),
-                                   original_global_id = col_skip(),
-                                   IRWIN_ID = col_skip(),
-                                   irwin_identifier = col_skip()
-                                   ))
+library(tidyverse)
+library(tidycensus)
+
+library(sf)
+library(tigris)
+ca_sf <- counties(state = "CA", cb = TRUE)
 
 
+fires_sf <- st_as_sf(fires_sf, wkt = "WKT")
+ca_sf <- st_as_sf(ca_sf, wkt = "geometry")
 
+st_crs(fires_sf) <- st_crs(ca_sf)
+fires_sf <- st_make_valid(fires_sf)
 
+fires_county <- st_intersection(fires_sf, ca_sf)
+fires_county$NAME <- fires_county$NAME
 
-State_Nm = col_skip(),
-                                   
-                                   Source_PAID = col_skip(),
-                                   WDPA_Cd = col_skip(),
-                                   
-                                   GAP_Sts = col_skip(),
-                                   GAPCdDt = col_skip(),
-                                   
-                                   GAPCdSrc = col_skip()
+#removing unnecessary columns
+fires_county_cleanup <- c("POI_Jurisdictional_UI", 
+                          "POI_Protecting_UI", 
+                          "reporting_UI",
+                          "fire_discovered_date_estimated_flag",
+                          "fire_control_date_estimated_flag",
+                          "collection_method",
+                          "CREATE_DAT",
+                          "CREATE_BY",
+                          "MODIFY_DAT",
+                          "MODIFY_BY",
+                          "created_us",
+                          "created_da",
+                          "last_edite",
+                          "last_edi_1",
+                          "administrative_state_code",
+                          "complex_name",
+                          "fire_code",
+                          "incident_num",
+                          "irwin_identifier",
+                          "admin_UC",
+                          "uniquie_fireID",
+                          "FIRE_DSCVR",
+                          "FIRE_DSC_1",
+                          "FIRE_DSC_2",
+                          "FIRE_CNTRL",
+                          "FIRE_CNT_1",
+                          "FIRE_CAUSE",
+                          "TOTAL_RPT_",
+                          "CMPLX_NM",
+                          "COUNTYFP",
+                          "COUNTYNS",
+                          "STATEFP",
+                          "IRWIN_ID",
+                          "ADM_UNIT_C",
+                          "ADMIN_ST",
+                          "UNQE_FIRE_",
+                          "STUSPS",
+                          "LSAD",
+                          "STATE_NAME"
+                          ) 
+fires_county <- fires_county %>%
+  select(-one_of(fires_county_cleanup))
+
+#renaming
+fires_county <- fires_county %>% 
+  rename(fire_name = name,
+         cause = cause_gen,
+         county_name = NAME,
+         county_name_full = NAMELSAD
+         )
+
+#fire counts by county stats
+fire_counts <- fires_county %>%
+  group_by(county_name) %>%
+  summarize(fire_count = n()) %>%
+  mutate(percentage = (fire_count / sum(fire_count)) * 100)
+
 ```
+
+

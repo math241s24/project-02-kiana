@@ -15,7 +15,6 @@ library(RColorBrewer)
 
 Initial mapping of datasets independently
 ```{r}
-
 ggplot() +
   geom_sf(data = PAD_CA_sf, aes(fill = mang_level)) +
   labs(fill = "Management Level") +
@@ -33,7 +32,13 @@ ggplot() +
   theme_void()
 ```
 
-Animation
+```{r}
+
+```
+
+
+
+Animated Plot of Wildfires each year (no county/mangament boundaries)
 ```{r}
 library(countdown)
 library(gt)
@@ -43,16 +48,13 @@ library(gifski)
 library(knitr)
 library(kableExtra)
 library(transformr)
-```
 
-```{r}
-#static plot
+
 p <- ggplot() +
   geom_sf(data = fires_sf, aes(fill = factor(discover_yr))) +
   labs(fill = "Year") +
   theme_void() 
 
-# adding animation
 p + transition_states(discover_yr, transition_length = 1, state_length = 1)
 
 animate(p)
