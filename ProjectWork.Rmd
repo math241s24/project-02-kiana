@@ -82,5 +82,13 @@ animate(fires_sf_byyear)
 
 ```
 
+Statistics and Analysis
+```{r}
+#fire counts by county stats
+fire_counts <- fires_county %>%
+  group_by(county_name) %>%
+  summarize(fire_count = n()) %>%
+  mutate(percentage = (fire_count / sum(fire_count)) * 100)
+```
 
 
