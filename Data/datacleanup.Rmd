@@ -1,4 +1,4 @@
-
+#question: How do i save the updated/wrangled datasets as new csv's so i can call them easily in the project work file?
 
 ```{r}
 library(readr)
@@ -15,7 +15,7 @@ Fire Dataset Cleanup:
 - removing unneccesary variables
 - renaming variables
 ```{r}
-fires <- read_csv("~/Rstudio/DataScience/project-02-kiana/Data/fires.csv", 
+fires <- read_csv("~/Rstudio/DataScience/project-02-kiana/Data/Original_Data/fires.csv", 
                   col_types = cols(COMMENT = col_skip(),
                                    last_edited_user = col_skip(),
                                    last_edited_date = col_skip(),
@@ -45,8 +45,21 @@ fires <- fires %>%
          acres_total = total_reported_acres
          )
 
+#making it spatial
+fires_sf <- fires %>%
+  filter(!is.na(WKT)) %>%
+  st_as_sf(wkt = "WKT")
 
 ```
+
+<!--
+This dataset is soooo big, toooo big 
+The merged data below was merged through ArcGIS with support from Josie Griffin. The PAD_CA data originally came from US Geological Survey
+
+Citation:
+U.S. Geological Survey (USGS) Gap Analysis Project (GAP), 2022, Protected Areas Database of the United States (PAD-US) 3.0: U.S. Geological Survey data release, https://doi.org/10.5066/P9Q9LQ4B.
+
+URL: https://www.usgs.gov/programs/gap-analysis-project/science/pad-us-data-download
 
 
 PAD_CA Dataset Cleanup:
@@ -85,15 +98,7 @@ PAD_CA <- PAD_CA %>%
          designation = Des_Tp
          )
 
-```
-
-Making Spatial
--reducing management types down to American Indian Lands, Federal, Local Government, and State
-```{r}
-fires_sf <- fires %>%
-  filter(!is.na(WKT)) %>%
-  st_as_sf(wkt = "WKT")
-
+#making it spatial
 PAD_CA_sf <- PAD_CA %>%
   filter(!is.na(WKT)) %>%
   filter(mang_level != "Unknown") %>% 
@@ -105,17 +110,108 @@ PAD_CA_sf <- PAD_CA %>%
     TRUE ~ mang_level
   )) %>% 
   st_as_sf(wkt = "WKT") 
-
-
 ```
-
+-->
 
 Merging Datasets:
 fires and land management
 ```{r}
-fire_location <- read_csv("~/Rstudio/DataScience/project-02-kiana/Data/fire_location_data.csv")
-```
+#Josie Griffin merged them in GIS for me :)
+fire_location <- read_csv("~/Rstudio/DataScience/project-02-kiana/Data/Original_Data/fire_location_data.csv")
 
+fire_location_cleanup <- c("point_of_origin_jurisdictional_unit_identifier", 
+                          "point_of_origin_protecting_unit_identifier",
+                          "reported_unit_identifier",
+                          "fire_incident_number",
+                          "fire_code",
+                          "fire_discovered_date_estimated_flag",
+                          "fire_control_date_estimated_flag",
+                          "collection_method",
+                          "complex_name",
+                          "irwin_identifier",
+                          "wildland_fire_perimeter_comments",
+                          "administrative_unit_code",
+                          "administrative_state_code",
+                          "created_date",
+                          "created_by_name",
+                          "modified_date",
+                          "modify_by_name",
+                          "created_user",
+                          "created_date_2",
+                          "last_edited_user",
+                          "last_edited_date",
+                          "unique_fire_identifier",
+                          "FIRE_DSCVR",
+                          "FIRE_DSC_1",
+                          "FIRE_DSC_2",
+                          "FIRE_CNTRL",
+                          "FIRE_CNT_1",
+                          "FIRE_CAUSE",
+                          "TOTAL_RPT_",
+                          "CMPLX_NM",
+                          "IRWIN_ID",
+                          "COMMENT",
+                          "ADM_UNIT_C",
+                          "ADMIN_ST",
+                          "CREATE_DAT",
+                          "CREATE_BY",
+                          "MODIFY_DAT",
+                          "MODIFY_BY",
+                          "created_us",
+                          "created_da",
+                          "last_edite",
+                          "last_edi_1",
+                          "FeatClass",
+                          "d_FeatClas",
+                          "Category",
+                          "d_Category",
+                          "Own_Type",
+                          "d_Own_Type",
+                          "Own_Name",
+                          "d_Own_Name",
+                          "Loc_Own",
+                          "Mang_Type",
+                          "Mang_Name",
+                          "Loc_Mang",
+                          "Des_Tp",
+                          "Loc_Ds",
+                          "Unit_Nm",
+                          "State_Nm",
+                          "d_State_Nm",
+                          "UNQE_FIRE_",
+                          "Agg_Src",
+                          "Src_Date",
+                          "Source_PAI",
+                          "WDPA_Cd",
+                          "Pub_Access",
+                          "d_Pub_Acce",
+                          "Access_Src",
+                          "Access_Dt",
+                          "GAP_Sts",
+                          "dGAP_Sts",
+                          "GAPCdSrc",
+                          "GAPCdDt",
+                          "d_Des_Tp"
+                          ) 
+fire_location <- fire_location %>%
+  select(-one_of(fire_location_cleanup)) 
+
+fire_location <- fire_location %>% 
+  rename(fire_name = incident_name,
+         discover_yr = fire_discovered_calendar_year,
+         discover_date = fire_control_date,
+         control_date = fire_control_date,
+         fire_cause = incident_general_cause_name,
+         mang_level = d_Mang_Typ,
+         mang_name = d_Mang_Nam,
+         land_name = Loc_Nm
+         )
+
+fire_location <- fire_location %>% 
+  filter(!is.na(mang_level)) %>% 
+  filter(!is.na(mang_name))
+
+```
 
 Merging Datasets:
 fires and oregon counties
@@ -125,8 +221,8 @@ library(tidycensus)
 
 library(sf)
 library(tigris)
-ca_sf <- counties(state = "CA", cb = TRUE)
 
+ca_sf <- counties(state = "CA", cb = TRUE)
 
 fires_sf <- st_as_sf(fires_sf, wkt = "WKT")
 ca_sf <- st_as_sf(ca_sf, wkt = "geometry")
@@ -188,12 +284,6 @@ fires_county <- fires_county %>%
          county_name = NAME,
          county_name_full = NAMELSAD
          )
-
-#fire counts by county stats
-fire_counts <- fires_county %>%
-  group_by(county_name) %>%
-  summarize(fire_count = n()) %>%
-  mutate(percentage = (fire_count / sum(fire_count)) * 100)
 
 ```
 
