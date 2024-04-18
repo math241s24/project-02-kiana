@@ -1,4 +1,5 @@
 
+
 #Workspace for Project 2
 
 ```{r}
@@ -12,19 +13,22 @@ library(tmap)
 library(RColorBrewer)
 ```
 
-
-Initial mapping of datasets independently
+#bringing over data (post wrangling)
 ```{r}
-ggplot() +
-  geom_sf(data = PAD_CA_sf, aes(fill = mang_level)) +
-  labs(fill = "Management Level") +
-  theme_void()
 
-ggplot() +
-  geom_sf(data = fires_sf, aes(fill = discover_yr)) +
-  labs(fill = "Year") +
-  theme_void()
+```
 
+
+Initial mapping of datasets independently:
+- these take forever to load omg
+```{r}
+#map of management levels across california: federal, state, local, tribal etc
+#ggplot() +
+#  geom_sf(data = PAD_CA_sf, aes(fill = mang_level)) +
+#  labs(fill = "Management Level") +
+#  theme_void()
+
+#map of fires in CA: colored by year
 ggplot() +
   geom_sf(data = fires_sf, aes(fill = factor(discover_yr))) +
   labs(fill = "Year") +
@@ -32,13 +36,25 @@ ggplot() +
   theme_void()
 ```
 
+Justifying Management -> County:
+- stats showing vast majority is in federal so comparision/analysis would not be helpful
+- need useful merged dataset with fires and management 
+- percent in each type, count in each type
 ```{r}
+fire_counts_manglvl <- fire_location %>%
+  group_by(mang_level) %>%
+  summarize(fire_count = n()) %>%
+  mutate(percentage = (fire_count / sum(fire_count)) * 100)
 
+fire_counts_mangnm <- fire_location %>%
+  group_by(mang_name) %>%
+  summarize(fire_count = n()) %>%
+  mutate(percentage = (fire_count / sum(fire_count)) * 100)
 ```
 
-
-
-Animated Plot of Wildfires each year (no county/mangament boundaries)
+Animated Plot of Wildfires each year:
+- currently using fires_sf so without boundaries
+- create using fires_counties and add county boundaries
 ```{r}
 library(countdown)
 library(gt)
@@ -49,16 +65,22 @@ library(knitr)
 library(kableExtra)
 library(transformr)
 
-
-p <- ggplot() +
+#Animated plot of fires_sf without any boundaries
+fires_sf_byyear <- ggplot() +
   geom_sf(data = fires_sf, aes(fill = factor(discover_yr))) +
   labs(fill = "Year") +
   theme_void() 
 
-p + transition_states(discover_yr, transition_length = 1, state_length = 1)
+fires_sf_byyear + transition_states(discover_yr, transition_length = 1, state_length = 1)
 
-animate(p)
+animate(fires_sf_byyear)
 
 ```
+
+```{r}
+#animated plot of wildfires each year with fires_counties and adding county boundaries
+
+```
+
 
 
