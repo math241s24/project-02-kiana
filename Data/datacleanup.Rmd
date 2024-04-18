@@ -1,5 +1,4 @@
 #question: How do i save the updated/wrangled datasets as new csv's so i can call them easily in the project work file?
-#how to set it up so instead of my local locations its just here?
 
 ```{r}
 library(readr)
@@ -118,9 +117,9 @@ Merging Datasets:
 fires and land management
 ```{r}
 #Josie Griffin merged them in GIS for me :)
-fire_location <- read_csv("../Data/Original_Data/fire_location_data.csv")
+fire_manage <- read_csv("../Data/Original_Data/fire_location_data.csv")
 
-fire_location_cleanup <- c("point_of_origin_jurisdictional_unit_identifier", 
+fire_manage_cleanup <- c("point_of_origin_jurisdictional_unit_identifier", 
                           "point_of_origin_protecting_unit_identifier",
                           "reported_unit_identifier",
                           "fire_incident_number",
@@ -194,10 +193,10 @@ fire_location_cleanup <- c("point_of_origin_jurisdictional_unit_identifier",
                           "GAPCdDt",
                           "d_Des_Tp"
                           ) 
-fire_location <- fire_location %>%
-  select(-one_of(fire_location_cleanup)) 
+fire_manage <- fire_manage %>%
+  select(-one_of(fire_manage_cleanup)) 
 
-fire_location <- fire_location %>% 
+fire_manage <- fire_manage %>% 
   rename(fire_name = incident_name,
          discover_yr = fire_discovered_calendar_year,
          discover_date = fire_control_date,
@@ -208,7 +207,7 @@ fire_location <- fire_location %>%
          land_name = Loc_Nm
          )
 
-fire_location <- fire_location %>% 
+fire_manage <- fire_manage %>% 
   filter(!is.na(mang_level)) %>% 
   filter(!is.na(mang_name))
 
@@ -285,6 +284,16 @@ fires_county <- fires_county %>%
          county_name = NAME,
          county_name_full = NAMELSAD
          )
+
+```
+Saving Clean Data as new csvs
+- fires_sf (fire spatial data)
+- ca_sf (county spatial data)
+- fire_manage (merged fire and land management data)
+- fire_county (merged fire and county data)
+```{r}
+#write.csv(fires_sf, "fires_sf.csv", row.names = FALSE)
+#sf::st_write(fires_sf, "fires_sf.csv", driver = "CSV")
 
 ```
 

@@ -13,7 +13,11 @@ library(tmap)
 library(RColorBrewer)
 ```
 
-#bringing over data (post wrangling)
+#bringing over clean data 
+- fires_sf (fire spatial data)
+- ca_sf (county spatial data)
+- fire_manage (merged fire and land management data)
+- fire_county (merged fire and county data)
 ```{r}
 
 ```
@@ -28,6 +32,12 @@ Initial mapping of datasets independently:
 #  labs(fill = "Management Level") +
 #  theme_void()
 
+#map of county boundaries in CA
+ggplot() +
+  geom_sf(data = ca_sf, aes(fill = NAME), show.legend = FALSE) +
+  labs(fill = "County") +
+  theme_void() 
+
 #map of fires in CA: colored by year
 ggplot() +
   geom_sf(data = fires_sf, aes(fill = factor(discover_yr))) +
@@ -41,15 +51,32 @@ Justifying Management -> County:
 - need useful merged dataset with fires and management 
 - percent in each type, count in each type
 ```{r}
-fire_counts_manglvl <- fire_location %>%
+fire_counts_mangnm_yr <- fire_manage %>%
+  group_by(mang_name, discover_yr) %>%
+  summarize(fire_count = n()) %>%
+  mutate(percentage = (fire_count / sum(fire_count)) * 100)
+
+fire_counts_manglvl_yr <- fire_manage %>%
+  group_by(mang_level, discover_yr) %>%
+  summarize(fire_count = n()) %>%
+  mutate(percentage = (fire_count / sum(fire_count)) * 100)
+
+fire_counts_manglvl <- fire_manage %>%
   group_by(mang_level) %>%
   summarize(fire_count = n()) %>%
   mutate(percentage = (fire_count / sum(fire_count)) * 100)
 
-fire_counts_mangnm <- fire_location %>%
-  group_by(mang_name) %>%
-  summarize(fire_count = n()) %>%
-  mutate(percentage = (fire_count / sum(fire_count)) * 100)
+#74.3% of fires occurred on Federal Land, 510 fires
+#17.4% of fires occurred on State Land, 120 fires
+#nothing else of real importance
+#and this is from 1984 - 2020 ... 
+
+ggplot(fire_counts_manglvl_yr, aes(x = discover_yr, y = fire_count, color = mang_level)) +
+  geom_line() +
+  labs(title = "CA Wildfires Over Time Across Land Management Level",
+       x = "Year Discovered",
+       y = "Number of Fires",
+       color = "Land Management")
 ```
 
 Animated Plot of Wildfires each year:
@@ -65,6 +92,8 @@ library(knitr)
 library(kableExtra)
 library(transformr)
 
+fires_sf$discover_yr <- factor(fires_sf$discover_yr)
+
 #Animated plot of fires_sf without any boundaries
 fires_sf_byyear <- ggplot() +
   geom_sf(data = fires_sf, aes(fill = factor(discover_yr))) +
@@ -79,6 +108,17 @@ animate(fires_sf_byyear)
 
 ```{r}
 #animated plot of wildfires each year with fires_counties and adding county boundaries
+
+
+
+combined_plot <- ggplot() +
+  geom_sf(data = ca_sf, aes(fill = NAME)) +
+  labs(fill = "County") +
+  theme_void() 
+
+combined_plot + transition_states(fires_sf$discover_yr, transition_length = 1, state_length = 1)
+
+animate(combined_plot)
 
 ```
 
