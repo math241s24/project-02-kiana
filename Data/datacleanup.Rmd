@@ -65,8 +65,9 @@ URL: https://www.usgs.gov/programs/gap-analysis-project/science/pad-us-data-down
 PAD_CA Dataset Cleanup:
 - removing unneeded variables
 - renaming variables
+
 ```{r}
-PAD_CA <- read_csv("../Data/PAD_CA.csv", 
+PAD_CA <- read_csv("../Data/Original_Data/PAD_CA.csv", 
                   col_types = cols(FeatClass = col_skip(),
                                    Category = col_skip(),
                                    Loc_Own = col_skip(),
@@ -97,18 +98,19 @@ PAD_CA <- PAD_CA %>%
          mang_name = Mang_Name,
          designation = Des_Tp
          )
-
-#making it spatial
-PAD_CA_sf <- PAD_CA %>%
-  filter(!is.na(WKT)) %>%
-  filter(mang_level != "Unknown") %>% 
-  filter(mang_level != "Private") %>% 
-  filter(mang_level != "Non-Governmental Organization") %>% 
+         
+PAD_CA <- PAD_CA %>%
   mutate(mang_level = case_when(
     mang_level == "Regional Agency Special District" ~ "Local Government",
     mang_level == "Joint" ~ "Local Government",
+    mang_level == "Private" ~ "Non-Governmental Organization",
+    mang_level == "Unknown" ~ "Non-Governmental Organization",
     TRUE ~ mang_level
-  )) %>% 
+  ))
+
+#making it spatial
+PAD_CA_sf <- PAD_CA %>%
+  filter(!is.na(WKT)) %>% 
   st_as_sf(wkt = "WKT") 
 ```
 -->
