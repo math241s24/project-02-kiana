@@ -16,12 +16,22 @@ library(tidyverse)
 
 ## Goals
 
+After some preliminary data exploration it became clear that comparing wildfires across land management agency would not yield useful results given that the vast majority of public lands are federally managed (91% of total acreage, followed by 4% state, 2% local government etc), and it followed that the vast majority of wildfires occurring on public lands happened on federal land (Federal Land: 510 fires, 74.3%. State Land: 120 fires, 17.4%). In a data set spanning 1984 - 2020, there were years in which no fires occurred on non-federal land. Analysis would not be meaningful or statistically significant as there is simply not enough data for wildfires on land managed by non-federal entities.
+
+Recognizing this, I shifted my project goal to be comparing wildfires across different CA Counties, to consider resource allocation, differing needs, and wildfire prevention efficiency from a slightly different perspective.
+
+---------------------------------------------------------------------------------------
+
 My high level goal is to create an animated spatio-temporal visualization of wildfires in California comparing land management agencies. This will be a map of wildfires in California (with land management agency boundaries mapped), animated to reflect wildfires over time.
 
 \
 California is known to have intense wildfire seasons, that can have devastating impacts both to communities immediately impacted by the burn through destruction of property and lives lost, as well as far reaching consequences as smoke impacts other communities as well. There are a variety of public land managers in California such as the Bureau of Land Management (BLM), California State Parks, United States Department of the Interior, the US Forest Service (USFS), California State Lands Commission, and the National Park Service (NPS). In order to develop effective management strategies and effectively allocate resources, it is necessary to identify relevant stakeholders. My project hopes to address one aspect of this by considering which agencies are most directly impacted by wildfires. Additionally, these different land management agencies employ different wildfire mitigation strategies as they serve different functions; In order to assess the efficiency of varying wildfire mitigation strategies it is useful to consider the prevalence of wildfires across these agencies. It is ultimately important to recognize the complexity of the issue of wildfires and acknowledge the limitations of a mapping project like this in articulating the relationship between land management strategy and the reality of wildfires.
 
 ## Questions for Analysis
+
+Following my shift in project goal, I will now consider the impact of wildfires on different CA Counties by comparing the frequency and intensity (as measured by area burned) across different counties and across wildfire seasons.
+
+---------------------------------------------------------------------------------------
 
 I will consider the relationship between land management agency (BLM, USFS, etc) and wildfires by comparing the frequency and intensity of wildfires (by area burned) across different land management agencies.
 
@@ -35,6 +45,34 @@ I will also consider how this changes over time by comparing across wildfire sea
 #| 
 ## read data 
 ```
+
+fires_sf: wildfire perimeters from 1984 - 2020
+
+-   WFIGS Interagency Fire Perimeters data from the National Interagency Fire Center
+
+-   591 obs of 51 var
+
+ca_sf: county boundaries
+
+-   from American Community Survey (ACS) Census data
+
+-   58 obs of 13 var
+
+PAD_CA_sf: land management agency boundaries
+
+-   U.S. Geological Survey (USGS) Gap Analysis Project (GAP), 2022, Protected Areas Database of the United States (PAD-US) 3.0: U.S. Geological Survey data release, <https://doi.org/10.5066/P9Q9LQ4B.>
+
+-   27263 obs of 14 var
+
+fires_county: merged fire data and county boundaries
+
+-   637 obs of 24 var
+
+fire_manage: merged fire data and land management agency boundaries
+
+-   686 obs of 27 var
+
+---------------------------------------------------------------------------------------
 
 I will be using spatial data of land management boundaries from the Protected Areas Database (PAD-US) filtered for just California. I will also be incorporating the WFIGS Interagency Fire Perimeters dataset from the National Interagency Fire Center, also filtered for just California.
 
@@ -88,6 +126,6 @@ My repository contains the following:
 
 -   Data Folder
 
-    -   Contains datasets (wildfire perimeters, land management agency boundaries, merged dataset)
+    -   Contains datasets
 
     -   Contains R file for data cleanup
