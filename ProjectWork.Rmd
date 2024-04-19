@@ -141,7 +141,6 @@ animate(fires_sf_byyear)
 #animated plot of wildfires each year with fires_counties and adding county boundaries
 
 
-
 combined_plot <- ggplot() +
   geom_sf(data = ca_sf, aes(fill = NAME)) +
   labs(fill = "County") +
