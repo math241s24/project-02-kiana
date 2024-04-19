@@ -47,9 +47,40 @@ ggplot() +
 ```
 
 Justifying Management -> County:
-- stats showing vast majority is in federal so comparision/analysis would not be helpful
-- need useful merged dataset with fires and management 
-- percent in each type, count in each type
+<!--
+Considering percentage of total acres managed by each level
+```{r}
+total_acres <- sum(PAD_CA$GIS_Acres, na.rm = TRUE)
+
+area_summary <- PAD_CA %>%
+  group_by(mang_level) %>%
+  summarise(total_area = sum(GIS_Acres),
+            percentage = (sum(GIS_Acres) / total_acres) * 100) %>%
+  arrange(desc(total_area))  # Optional: Arrange by total_area in descending order
+
+print(area_summary)
+
+#piechart visualization  
+ggplot(area_summary, aes(x = "", y = percentage, fill = mang_level, label = paste0(round(percentage), "%"))) +
+  geom_bar(stat = "identity", width = 1) +
+  geom_text(position = position_stack(vjust = 0.5), aes(x = 1.55), color = "black", size = 3) +
+  coord_polar("y", start = 0) +
+  labs(title = "Percentage of Total Acres by Management Level",
+       fill = "") +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  scale_fill_brewer(palette = "Set2")
+```
+Results:
+mang_level                    total_area percentage
+  <chr>                              <dbl>      <dbl>
+1 Federal                         84464295     91.4  
+2 State                            3304552      3.58 
+3 Local Government                 2128048      2.30 
+4 Non-Governmental Organization    1816762      1.97 
+5 American Indian Lands             673302      0.729
+-->
+
 ```{r}
 fire_counts_mangnm_yr <- fire_manage %>%
   group_by(mang_name, discover_yr) %>%
