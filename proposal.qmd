@@ -20,7 +20,7 @@ After some preliminary data exploration it became clear that comparing wildfires
 
 Recognizing this, I shifted my project goal to be comparing wildfires across different CA Counties, to consider resource allocation, differing needs, and wildfire prevention efficiency from a slightly different perspective.
 
----------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 My high level goal is to create an animated spatio-temporal visualization of wildfires in California comparing land management agencies. This will be a map of wildfires in California (with land management agency boundaries mapped), animated to reflect wildfires over time.
 
@@ -31,7 +31,7 @@ California is known to have intense wildfire seasons, that can have devastating 
 
 Following my shift in project goal, I will now consider the impact of wildfires on different CA Counties by comparing the frequency and intensity (as measured by area burned) across different counties and across wildfire seasons.
 
----------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 I will consider the relationship between land management agency (BLM, USFS, etc) and wildfires by comparing the frequency and intensity of wildfires (by area burned) across different land management agencies.
 
@@ -72,7 +72,7 @@ fire_manage: merged fire data and land management agency boundaries
 
 -   686 obs of 27 var
 
----------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 I will be using spatial data of land management boundaries from the Protected Areas Database (PAD-US) filtered for just California. I will also be incorporating the WFIGS Interagency Fire Perimeters dataset from the National Interagency Fire Center, also filtered for just California.
 
