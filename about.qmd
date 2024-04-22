@@ -1,7 +1,8 @@
 ---
-title: "CA Wildfires Across Public Lands"
+title: "CA Wildfires"
 format: html
 editor: visual
 ---
 
-This project was developed by Kiana Fields. For [MATH/STAT241](https://aallorant.github.io/math241s24/) at Reed College.
+This project was developed by Kiana Fields for [MATH/STAT241](https://aallorant.github.io/math241s24/) at Reed College.\
+The project explores wildfires in CA comparing frequency and intensity across public lands boundaries and counties.
