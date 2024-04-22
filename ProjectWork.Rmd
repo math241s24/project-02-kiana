@@ -1,5 +1,4 @@
 
-
 #Workspace for Project 2
 
 ```{r}
@@ -11,6 +10,14 @@ library(sf)
 library(tigris)
 library(tmap)
 library(RColorBrewer)
+library(countdown)
+library(gt)
+library(readxl)
+library(gganimate)
+library(gifski)
+library(knitr)
+library(kableExtra)
+library(transformr)
 ```
 
 #bringing over clean data 
@@ -50,10 +57,11 @@ ggplot() +
 ```
 
 Justifying Management -> County:
-<!--
+
 Considering percentage of total acres managed by each level
-```{r}
-total_acres <- sum(PAD_CA$GIS_Acres, na.rm = TRUE)
+```{r, eval = FALSE}
+PAD_CA_sf <- readRDS('Data/PAD_CA_sf.rds')
+total_acres <- sum(PAD_CA_sf$GIS_Acres, na.rm = TRUE)
 
 area_summary <- PAD_CA %>%
   group_by(mang_level) %>%
@@ -63,12 +71,13 @@ area_summary <- PAD_CA %>%
 
 print(area_summary)
 
-#piechart visualization  
+#piechart visualization of management level
 ggplot(area_summary, aes(x = "", y = percentage, fill = mang_level, label = paste0(round(percentage), "%"))) +
   geom_bar(stat = "identity", width = 1) +
   geom_text(position = position_stack(vjust = 0.5), aes(x = 1.55), color = "black", size = 3) +
   coord_polar("y", start = 0) +
-  labs(title = "Percentage of Total Acres by Management Level",
+  labs(title = "Public Lands Management:",
+       subtitle = "Percentage of Public Lands Each Jurisdiction Manages",
        fill = "") +
   theme_void() +
   theme(legend.position = "bottom") +
@@ -82,50 +91,77 @@ mang_level                    total_area percentage
 3 Local Government                 2128048      2.30 
 4 Non-Governmental Organization    1816762      1.97 
 5 American Indian Lands             673302      0.729
--->
+
 
 ```{r}
-fire_counts_mangnm_yr <- fire_manage %>%
-  group_by(mang_name, discover_yr) %>%
-  summarize(fire_count = n()) %>%
-  mutate(percentage = (fire_count / sum(fire_count)) * 100)
-
-fire_counts_manglvl_yr <- fire_manage %>%
-  group_by(mang_level, discover_yr) %>%
-  summarize(fire_count = n()) %>%
-  mutate(percentage = (fire_count / sum(fire_count)) * 100)
-
-fire_counts_manglvl <- fire_manage %>%
+fire_counts_manglvl <- fires_manage %>%
   group_by(mang_level) %>%
   summarize(fire_count = n()) %>%
   mutate(percentage = (fire_count / sum(fire_count)) * 100)
+
+ggplot(fire_counts_manglvl, aes(x = "", y = percentage, fill = mang_level, label = paste0(round(percentage), "%"))) +
+  geom_bar(stat = "identity", width = 1) +
+  geom_text(position = position_stack(vjust = 0.5), aes(x = 1.55), color = "black", size = 3) +
+  coord_polar("y", start = 0) +
+  labs(title = "Wildfires on Public Lands:",
+       subtitle = "Jurisdiction of public land fires from 1984-2020",
+       fill = "") +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  scale_fill_brewer(palette = "Set2")
 
 #74.3% of fires occurred on Federal Land, 510 fires
 #17.4% of fires occurred on State Land, 120 fires
 #nothing else of real importance
 #and this is from 1984 - 2020 ... 
+```
 
-ggplot(fire_counts_manglvl_yr, aes(x = discover_yr, y = fire_count, color = mang_level)) +
+Over Time
+```{r}
+fire_counts_manglvlyr <- fires_manage %>%
+  group_by(mang_level, discover_yr) %>%
+  summarize(fire_count = n(), total_acres = sum(total_reported_acres)) %>%
+  ungroup() %>%
+  group_by(discover_yr) %>%
+  mutate(total_fires = sum(fire_count),
+         total_acres_burnt = sum(total_acres),
+         numfires_perc = round((fire_count / total_fires) * 100),
+         acresfires_perc = round((total_acres / total_acres_burnt) * 100),
+         avg_size = total_acres / fire_count) %>%
+  ungroup()
+
+ggplot(fire_counts_manglvlyr, aes(x = discover_yr, y = fire_count, color = mang_level)) +
   geom_line() +
-  labs(title = "CA Wildfires Over Time Across Land Management Level",
+  labs(title = "CA Wildfires Over Time Across Land Management Jurisdiction",
        x = "Year Discovered",
        y = "Number of Fires",
+       color = "Land Management")
+
+ggplot(fire_counts_manglvlyr, aes(x = discover_yr, y = numfires_perc, color = mang_level)) +
+  geom_line() +
+  labs(title = "Land Management Jurisdiction of CA Wildfires: Proportion of Fires",
+       x = "Year Discovered",
+       y = "Percentage of Total Fires",
+       color = "Land Management")
+
+ggplot(fire_counts_manglvlyr, aes(x = discover_yr, y = total_acres_burnt, color = mang_level)) +
+  geom_line() +
+  labs(title = "Land Management Jurisdiction of CA Wildfires: Acres Burnt",
+       x = "Year Discovered",
+       y = "Total Acres Burnt",
+       color = "Land Management")
+
+ggplot(fire_counts_manglvlyr, aes(x = discover_yr, y = avg_size, color = mang_level)) +
+  geom_line() +
+  labs(title = "Land Management Jurisdiction of CA Wildfires: Fire Size",
+       x = "Year Discovered",
+       y = "Average Size of Fires",
        color = "Land Management")
 ```
 
 Animated Plot of Wildfires each year:
-- currently using fires_sf so without boundaries
-- create using fires_counties and add county boundaries
+- without boundaries
 ```{r}
-library(countdown)
-library(gt)
-library(readxl)
-library(gganimate)
-library(gifski)
-library(knitr)
-library(kableExtra)
-library(transformr)
-
 fires_sf$discover_yr <- factor(fires_sf$discover_yr)
 
 #Animated plot of fires_sf without any boundaries
@@ -139,57 +175,86 @@ ggplot() +
 
 ```
 
+- with county boundaries
 ```{r}
 #animated plot of wildfires each year with county boundaries
 
-fires_county_grp <- fires_county %>% 
-  group_by(county_name, discover_yr) %>% 
-  summarize(fire_count = n()) %>% 
-  mutate(percentage = paste0(round((fire_count / sum(fire_count)) * 100), "%"))
-
-
 ggplot() +
-  geom_sf(data = ca_sf, aes(), fill = "white", color = "black") +
-  geom_sf(data = fires_county_grp, aes(fill = county_name)) +
-  labs(title = 'Year: {closest_state}', 
-       fill = "Percentage of Fires by County") +
-  guides(fill = guide_legend(label = paste(unique(fires_county$county_name),
-                                           " - ", 
-                                           fires_county$percentage, 
-                                           "%", sep = ""))) +
-  theme_void() +
-  transition_states(discover_yr, 
-                    transition_length = 5, 
-                    state_length = 2)
-
-
-```
-
-```{r}
-fires_county |>
-  group_by(year) |>
-  mutate(rank = order) |>
-  mutate(label = paste0(county_name,' - ' ,percentage))
-
-ggplot() +
-  geom_sf(data = ca_sf, aes(), fill = NA, color = "black") +
-  geom_sf(data = fires_county_grp, aes(fill = county_name)) +
+  geom_sf(data = ca_sf, aes(), fill = NA, color = "black", size = 1.2) +
+  geom_sf(data = fires_county_grp, aes(fill = county_name), show.legend = FALSE) +
   labs(title = 'Year: {closest_state}') +
-  scale_fill_discrete(name = "Percentage of Fires by County", 
-                      labels = paste(fires_county_grp$county_name, " - ", fires_county_grp$percentage, "%", sep = "")) +
   theme_void() +
   transition_states(discover_yr, 
                   transition_length = 5, 
-                  state_length = 2)
+                  state_length = 5)
+
 ```
+
+Comparing Frequency and Intensity of Fires over time by County (ALL COUNTIES)
+```{r}
+fires_county_grp <- fires_county %>%
+  group_by(county_name, discover_yr) %>%
+  summarize(fire_count = n(), total_acres = sum(acres_total)) %>%
+  ungroup() %>%
+  group_by(discover_yr) %>%
+  mutate(total_fires = sum(fire_count),
+         total_acres_burnt = sum(total_acres),
+         numfires_perc = round((fire_count / total_fires) * 100),
+         acresfires_perc = round((total_acres / total_acres_burnt) * 100),
+         avg_size = total_acres / fire_count) %>%
+  ungroup()
+
+ggplot(fires_county_grp, aes(x = discover_yr, y = fire_count, color = county_name)) +
+  geom_line() +
+  labs(title = "CA Wildfires across Counties: Number of Fires",
+       x = "Year Discovered",
+       y = "Number of Fires",
+       color = "County")
+
+ggplot(fires_county_grp, aes(x = discover_yr, y = numfires_perc, color = county_name)) +
+  geom_line() +
+  labs(title = "CA Wildfires across Counties: Percentage of Fires",
+       x = "Year Discovered",
+       y = "Percentage of Total Fires",
+       color = "County")
+
+ggplot(fires_county_grp, aes(x = discover_yr, y = acresfires_perc, color = county_name)) +
+  geom_line() +
+  labs(title = "CA Wildfires across Counties: Percentage of Total Fire Damage",
+       x = "Year Discovered",
+       y = "Percentage of Total Acres Burnt",
+       color = "County")
+
+ggplot(fires_county_grp, aes(x = discover_yr, y = avg_size, color = county_name)) +
+  geom_line() +
+  labs(title = "CA Wildfires across Counties: Average Size of Fires",
+       x = "Year Discovered",
+       y = "Average Size of Fires",
+       color = "County")
+```
+
+
+
+
 
 Statistics and Analysis
 ```{r}
-#fire counts by county stats
-fire_counts <- fires_county %>%
-  group_by(county_name) %>%
-  summarize(fire_count = n()) %>%
-  mutate(percentage = (fire_count / sum(fire_count)) * 100)
+#grouping and calculating:
+#percent of total number of fires by year/county
+#percent of total acres burned in a year by county
+#average_size of fires in county by year (acres burnt / number of fires)
+
+fires_county_grp <- fires_county %>%
+  group_by(county_name, discover_yr) %>%
+  summarize(fire_count = n(), total_acres = sum(acres_total)) %>%
+  ungroup() %>%
+  group_by(discover_yr) %>%
+  mutate(total_fires = sum(fire_count),
+         total_acres_burnt = sum(total_acres),
+         numfires_perc = paste0(round((fire_count / total_fires) * 100), "%"),
+         acresfires_perc = paste0(round((total_acres / total_acres_burnt) * 100), "%"),
+         avg_size = total_acres / fire_count) %>%
+  ungroup()
 ```
 
 

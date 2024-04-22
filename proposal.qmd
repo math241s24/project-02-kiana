@@ -19,7 +19,7 @@ library(readr)
 
 After some preliminary data exploration it became clear that comparing wildfires across land management agency would not yield useful results given that the vast majority of public lands are federally managed (91% of total acreage, followed by 4% state, 2% local government etc), and it followed that the vast majority of wildfires occurring on public lands happened on federal land (Federal Land: 510 fires, 74.3%. State Land: 120 fires, 17.4%). In a data set spanning 1984 - 2020, there were years in which no fires occurred on non-federal land. Analysis would not be meaningful or statistically significant as there is simply not enough data for wildfires on land managed by non-federal entities.
 
-Recognizing this, I shifted my project goal to be comparing wildfires across different CA Counties, to consider resource allocation, differing needs, and wildfire prevention efficiency from a slightly different perspective.
+Recognizing this, I shifted my project goal to be comparing wildfires across different CA Counties, for an analysis of changing wildfires over time.
 
 ------------------------------------------------------------------------
 

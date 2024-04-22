@@ -51,7 +51,7 @@ fires_sf <- fires %>%
 
 ```
 
-<!--
+
 This dataset is soooo big, toooo big 
 The merged data below was merged through ArcGIS with support from Josie Griffin. The PAD_CA data originally came from US Geological Survey
 
@@ -65,7 +65,7 @@ PAD_CA Dataset Cleanup:
 - removing unneeded variables
 - renaming variables
 
-```{r}
+```{r, eval = FALSE}
 PAD_CA <- read_csv("../Data/Original_Data/PAD_CA.csv", 
                   col_types = cols(FeatClass = col_skip(),
                                    Category = col_skip(),
@@ -111,8 +111,10 @@ PAD_CA <- PAD_CA %>%
 PAD_CA_sf <- PAD_CA %>%
   filter(!is.na(WKT)) %>% 
   st_as_sf(wkt = "WKT") 
+
+saveRDS(PAD_CA_sf, "PAD_CA_sf.rds")
 ```
--->
+
 
 Merging Datasets:
 fires and land management
