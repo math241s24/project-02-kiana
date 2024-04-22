@@ -1,9 +1,8 @@
 project:
   type: website
-  output-dir: docs
 
 website:
-  title: Project 2
+  title: Wildfires in California
   navbar:
     right:
       - icon: github
