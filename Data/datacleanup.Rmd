@@ -1,4 +1,3 @@
-#question: How do i save the updated/wrangled datasets as new csv's so i can call them easily in the project work file?
 
 ```{r}
 library(readr)
@@ -119,9 +118,9 @@ Merging Datasets:
 fires and land management
 ```{r}
 #Josie Griffin merged them in GIS for me :)
-fire_manage <- read_csv("../Data/Original_Data/fire_location_data.csv")
+fires_manage <- read_csv("../Data/Original_Data/fire_location_data.csv")
 
-fire_manage_cleanup <- c("point_of_origin_jurisdictional_unit_identifier", 
+fires_manage_cleanup <- c("point_of_origin_jurisdictional_unit_identifier", 
                           "point_of_origin_protecting_unit_identifier",
                           "reported_unit_identifier",
                           "fire_incident_number",
@@ -195,10 +194,10 @@ fire_manage_cleanup <- c("point_of_origin_jurisdictional_unit_identifier",
                           "GAPCdDt",
                           "d_Des_Tp"
                           ) 
-fire_manage <- fire_manage %>%
-  select(-one_of(fire_manage_cleanup)) 
+fires_manage <- fires_manage %>%
+  select(-one_of(fires_manage_cleanup)) 
 
-fire_manage <- fire_manage %>% 
+fires_manage <- fires_manage %>% 
   rename(fire_name = incident_name,
          discover_yr = fire_discovered_calendar_year,
          discover_date = fire_control_date,
@@ -209,7 +208,7 @@ fire_manage <- fire_manage %>%
          land_name = Loc_Nm
          )
 
-fire_manage <- fire_manage %>% 
+fires_manage <- fires_manage %>% 
   filter(!is.na(mang_level)) %>% 
   filter(!is.na(mang_name))
 
@@ -294,9 +293,10 @@ Saving Clean Data as new csvs
 - fire_manage (merged fire and land management data)
 - fire_county (merged fire and county data)
 ```{r}
-#write.csv(fires_sf, "fires_sf.csv", row.names = FALSE)
-#sf::st_write(fires_sf, "fires_sf.csv", driver = "CSV")
-
+saveRDS(fires_sf, "fires_sf.rds")
+saveRDS(ca_sf, "ca_sf.rds")
+saveRDS(fires_manage, "fires_manage.rds")
+saveRDS(fires_county, "fires_county.rds")
 ```
 
 

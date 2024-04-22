@@ -19,7 +19,10 @@ library(RColorBrewer)
 - fire_manage (merged fire and land management data)
 - fire_county (merged fire and county data)
 ```{r}
-
+fires_sf <- readRDS('Data/fires_sf.rds')
+ca_sf <- readRDS('Data/ca_sf.rds')
+fires_manage <- readRDS('Data/fires_manage.rds')
+fires_county <- readRDS('Data/fires_county.rds')
 ```
 
 
@@ -126,30 +129,58 @@ library(transformr)
 fires_sf$discover_yr <- factor(fires_sf$discover_yr)
 
 #Animated plot of fires_sf without any boundaries
-fires_sf_byyear <- ggplot() +
+ggplot() +
   geom_sf(data = fires_sf, aes(fill = factor(discover_yr))) +
   labs(fill = "Year") +
-  theme_void() 
-
-fires_sf_byyear + transition_states(discover_yr, transition_length = 1, state_length = 1)
-
-animate(fires_sf_byyear)
+  theme_void() + 
+  transition_states(discover_yr, 
+                    transition_length = 1, 
+                    state_length = 1)
 
 ```
 
 ```{r}
-#animated plot of wildfires each year with fires_counties and adding county boundaries
+#animated plot of wildfires each year with county boundaries
+
+fires_county_grp <- fires_county %>% 
+  group_by(county_name, discover_yr) %>% 
+  summarize(fire_count = n()) %>% 
+  mutate(percentage = paste0(round((fire_count / sum(fire_count)) * 100), "%"))
 
 
-combined_plot <- ggplot() +
-  geom_sf(data = ca_sf, aes(fill = NAME)) +
-  labs(fill = "County") +
-  theme_void() 
+ggplot() +
+  geom_sf(data = ca_sf, aes(), fill = "white", color = "black") +
+  geom_sf(data = fires_county_grp, aes(fill = county_name)) +
+  labs(title = 'Year: {closest_state}', 
+       fill = "Percentage of Fires by County") +
+  guides(fill = guide_legend(label = paste(unique(fires_county$county_name),
+                                           " - ", 
+                                           fires_county$percentage, 
+                                           "%", sep = ""))) +
+  theme_void() +
+  transition_states(discover_yr, 
+                    transition_length = 5, 
+                    state_length = 2)
 
-combined_plot + transition_states(fires_sf$discover_yr, transition_length = 1, state_length = 1)
 
-animate(combined_plot)
+```
 
+```{r}
+fires_county |>
+  group_by(year) |>
+  mutate(rank = order) |>
+  mutate(label = paste0(county_name,' - ' ,percentage))
+
+ggplot() +
+  geom_sf(data = ca_sf, aes(), fill = NA, color = "black") +
+  geom_sf(data = fires_county_grp, aes(fill = county_name)) +
+  labs(title = 'Year: {closest_state}') +
+  scale_fill_discrete(name = "Percentage of Fires by County", 
+                      labels = paste(fires_county_grp$county_name, " - ", fires_county_grp$percentage, "%", sep = "")) +
+  theme_void() +
+  transition_states(discover_yr, 
+                  transition_length = 5, 
+                  state_length = 2)
 ```
 
 Statistics and Analysis
