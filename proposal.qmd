@@ -12,6 +12,7 @@ editor: visual
 #| warning: false
 
 library(tidyverse)
+library(readr)
 ```
 
 ## Goals
@@ -43,7 +44,14 @@ I will also consider how this changes over time by comparing across wildfire sea
 #| label: load-data
 #| message: false
 #| 
-## read data 
+fires_sf <- readRDS('Data/fires_sf.rds')
+head(fires_sf)
+ca_sf <- readRDS
+head(ca_sf)
+fires_manage <- readRDS('Data/fires_manage.rds')
+head(fires_manage)
+fires_county <- readRDS('Data/fires_county.rds')
+head(fires_county)
 ```
 
 fires_sf: wildfire perimeters from 1984 - 2020
