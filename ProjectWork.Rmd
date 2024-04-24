@@ -178,20 +178,6 @@ ggplot() +
 - with county boundaries
 ```{r}
 #animated plot of wildfires each year with county boundaries
-
-ggplot() +
-  geom_sf(data = ca_sf, aes(), fill = NA, color = "black", size = 1.2) +
-  geom_sf(data = fires_county_grp, aes(fill = county_name), show.legend = FALSE) +
-  labs(title = 'Year: {closest_state}') +
-  theme_void() +
-  transition_states(discover_yr, 
-                  transition_length = 5, 
-                  state_length = 5)
-
-```
-
-Comparing Frequency and Intensity of Fires over time by County (ALL COUNTIES)
-```{r}
 fires_county_grp <- fires_county %>%
   group_by(county_name, discover_yr) %>%
   summarize(fire_count = n(), total_acres = sum(acres_total)) %>%
@@ -204,6 +190,43 @@ fires_county_grp <- fires_county %>%
          avg_size = total_acres / fire_count) %>%
   ungroup()
 
+ggplot() +
+  geom_sf(data = ca_sf, aes(), fill = NA, color = "black", size = 1.2) +
+  geom_sf(data = fires_county_grp, aes(fill = county_name), show.legend = FALSE) +
+  labs(title = 'Year: {closest_state}') +
+  theme_void() +
+  transition_states(discover_yr, 
+                  transition_length = 5, 
+                  state_length = 5)
+
+```
+
+```{r}
+fires_county <- fires_county %>%
+  group_by(year, county_name) %>%
+  summarise(total_fires_in_county = sum(fires_count), .groups = 'drop') %>%
+  mutate(percentage = (total_fires_in_county / total_fires) * 100)
+
+top_counties <- fires_county %>%
+  arrange(year, desc(percentage)) %>%
+  group_by(year) %>%
+  slice_max(order_by = percentage, n = 5)
+
+
+p <- ggplot() +
+  geom_sf(data = ca_sf, aes(geometry = geometry), fill = NA, color = "black") +  
+  geom_sf(data = fires_county, aes(fill = percentage), show.legend = FALSE) +  # Here, you color by counties
+  geom_sf_text(data = top_counties, aes(label = paste(county_name, " - ", round(percentage, 2), "%")), size = 3, hjust = 1.5) + # and the text is only used for the top 5
+  scale_fill_viridis_c(option = "C", begin = 0.2, end = 0.8, name = "Percentage of Fires") +
+  labs(title = 'Year: {frame_time}', subtitle = "Top 5 Counties by Fire Proportion") +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))
+```
+
+
+Comparing Frequency and Intensity of Fires over time by County (ALL COUNTIES)
+- create maps for of county boundaries colored by these variables
+```{r}
 ggplot(fires_county_grp, aes(x = discover_yr, y = fire_count, color = county_name)) +
   geom_line() +
   labs(title = "CA Wildfires across Counties: Number of Fires",
@@ -243,18 +266,8 @@ Statistics and Analysis
 #percent of total number of fires by year/county
 #percent of total acres burned in a year by county
 #average_size of fires in county by year (acres burnt / number of fires)
+#^^ this is all present in the fires_county_grp
 
-fires_county_grp <- fires_county %>%
-  group_by(county_name, discover_yr) %>%
-  summarize(fire_count = n(), total_acres = sum(acres_total)) %>%
-  ungroup() %>%
-  group_by(discover_yr) %>%
-  mutate(total_fires = sum(fire_count),
-         total_acres_burnt = sum(total_acres),
-         numfires_perc = paste0(round((fire_count / total_fires) * 100), "%"),
-         acresfires_perc = paste0(round((total_acres / total_acres_burnt) * 100), "%"),
-         avg_size = total_acres / fire_count) %>%
-  ungroup()
 ```
 
 
