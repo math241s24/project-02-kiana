@@ -302,3 +302,36 @@ saveRDS(fires_county, "fires_county.rds")
 ```
 
 
+making dataset useful for mapping ^^
+```{r}
+fires_county_grp <- fires_county %>%
+  group_by(county_name, discover_yr) %>%
+  summarize(fire_count = n(), total_acres = sum(acres_total)) %>%
+  ungroup() %>%
+  group_by(discover_yr) %>%
+  mutate(total_fires = sum(fire_count),
+         total_acres_burnt = sum(total_acres),
+         numfires_perc = round((fire_count / total_fires) * 100),
+         acresfires_perc = round((total_acres / total_acres_burnt) * 100),
+         avg_size = total_acres / fire_count) %>%
+  ungroup()
+
+county_fire_stats <- fires_county_grp
+
+# Select relevant columns from ca_sf
+ca_county_wkts <- ca_sf %>%
+  select(NAME, geometry)
+
+for (i in seq_len(nrow(county_fire_stats))) {
+  county_name <- county_fire_stats$county_name[i]
+  match_geom <- ca_county_wkts$geometry[ca_county_wkts$NAME == county_name]
+  if (length(match_geom) > 0) {
+    county_fire_stats$WKT[i] <- match_geom
+  }
+}
+
+saveRDS(fires_county_grp, "fires_county_grp.rds")
+saveRDS(county_fire_stats, "county_fire_stats.rds")
+```
+
+
