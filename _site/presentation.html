@@ -326,7 +326,7 @@
 
 <section id="title-slide" data-slide-number="none" class="quarto-title-block center">
   <h1 class="title">Examining California Wildfires</h1>
-  <p class="subtitle">Project 2 - Kiana Fields</p>
+  <p class="subtitle">Project 2</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -337,8 +337,158 @@ Kiana Fields
 </div>
 
 </section>
-<section class="slide level2">
-
+<section id="research-question" class="slide level2 smaller">
+<h2>Research Question</h2>
+<h4 id="how-does-the-burden-of-wildfires-compare-across-different-ca-counties-and-how-has-this-changed-over-time">How does the burden of wildfires compare across different CA Counties, and how has this changed over time?</h4>
+<p>I wanted to compare the intensity and frequency of wildfires across CA Counties over the years to better understand this issue, particularly as this issue progresses.</p>
+<p>To do this, I created spatio-temporal visualizations of wildfires in California specifically considering:</p>
+<ul>
+<li><p>Frequency of fires: Number of fires counties experience in a year, Percent of total yearly fires occurring in each county</p></li>
+<li><p>Intensity of fires: Acres burnt in each county, Percent of total acres burnt in a year occuring in each county, average fire size (total acres burnt / number of fires)</p></li>
+</ul>
+</section>
+<section id="the-data" class="slide level2 smaller">
+<h2>The Data</h2>
+<ul>
+<li><p>fires_sf: wildfire perimeters from 1984 - 2020</p>
+<ul>
+<li>WFIGS Interagency Fire Perimeters data from the National Interagency Fire Center</li>
+</ul></li>
+<li><p>ca_sf: county boundaries</p>
+<ul>
+<li>from sf package</li>
+</ul></li>
+<li><p>PAD_CA_sf: land management agency boundaries</p>
+<ul>
+<li>U.S. Geological Survey (USGS) Gap Analysis Project (GAP) in 2022: Protected Areas Database of the United States</li>
+</ul></li>
+<li><p>fires_county: merged fire data and county boundaries</p></li>
+<li><p>fire_manage: merged fire data and land management agency boundaries</p></li>
+</ul>
+</section>
+<section id="shift-from-land-management-agencies-to-counties" class="slide level2 smaller">
+<h2>Shift from Land Management Agencies to Counties</h2>
+<div style="display: flex; flex-direction: row;">
+<p><img src="PrerenderedPlots/pie_landmang_perclands.png" width="500" height="500"> <img src="PrerenderedPlots/pie_landmang_percfires.png" width="500" height="500"></p>
+</div>
+</section>
+<section id="wildfires-from-1984---2020" class="slide level2">
+<h2>Wildfires from 1984 - 2020</h2>
+<p>Mapping wildfire perimeters, and indicating counties experiencing wildfires</p>
+<div style="display: flex; flex-direction: row;">
+<p><img src="PrerenderedPlots/anim_firescounties.gif" width="500" height="500"> <img src="PrerenderedPlots/anim_firescounties_grp.gif" width="500" height="500"></p>
+</div>
+</section>
+<section id="wildfires-across-all-of-california" class="slide level2">
+<h2>Wildfires Across all of California</h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Fire Count</a></li><li><a href="#tabset-1-2">Acres Burnt</a></li><li><a href="#tabset-1-3">Average Fire Size</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<p><img data-src="presentation_files/figure-revealjs/fire count all CA-1.png" style="width:70.0%"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-2">
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<p><img data-src="presentation_files/figure-revealjs/total acres all ca-1.png" style="width:70.0%"></p>
+</div>
+</div>
+</div>
+<div id="tabset-1-3">
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<p><img data-src="presentation_files/figure-revealjs/avg fire size all CA-1.png" style="width:70.0%"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="frequency-total-fires" class="slide level2 smaller">
+<h2>Frequency: Total Fires</h2>
+<h4 id="comparing-frequency-and-intensity-over-time-by-county">Comparing Frequency and Intensity over time by County</h4>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Animated Map</a></li><li><a href="#tabset-2-2">Line Plot</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<div style="display: flex; flex-direction: row;">
+<p><img src="PrerenderedPlots/anim_totfires_county.gif" width="500" height="500"></p>
+</div>
+</div>
+<div id="tabset-2-2">
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<p><img data-src="presentation_files/figure-revealjs/top5 counties total fires line plot-1.png" style="width:70.0%"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="intensity-total-acres-burnt" class="slide level2 smaller">
+<h2>Intensity: Total Acres Burnt</h2>
+<h4 id="comparing-frequency-and-intensity-over-time-by-county-1">Comparing Frequency and Intensity over time by County</h4>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Animated Map</a></li><li><a href="#tabset-3-2">Line Plot</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
+<div style="display: flex; flex-direction: row;">
+<p><img src="PrerenderedPlots/anim_totacres_county.gif" width="500" height="500"></p>
+</div>
+</div>
+<div id="tabset-3-2">
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<p><img data-src="presentation_files/figure-revealjs/top 5 counties total acres line plot-1.png" style="width:70.0%"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="intensity-average-fire-size" class="slide level2 smaller">
+<h2>Intensity: Average Fire Size</h2>
+<h4 id="comparing-frequency-and-intensity-over-time-by-county-2">Comparing Frequency and Intensity over time by County</h4>
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Animated Map</a></li><li><a href="#tabset-4-2">Line Plot</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
+<div style="display: flex; flex-direction: row;">
+<p><img src="PrerenderedPlots/anim_avgsize_county.gif" width="500" height="500"></p>
+</div>
+</div>
+<div id="tabset-4-2">
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<p><img data-src="presentation_files/figure-revealjs/top 5 counties average fire size line plot-1.png" style="width:70.0%"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="conclusions" class="slide level2 smaller">
+<h2>Conclusions</h2>
+<ul>
+<li>The burden of wildfires is increasing across all of California
+<ul>
+<li>Some counties, like Lassen Riverside and San Diego, are particularly impacted</li>
+<li>Some years had particularly devestating fire seasons: 2018 and 2012
+<ul>
+<li>2018 had Carr Fire, Mendocino Complex Fire, Camp Fire etc</li>
+<li>2012 had Rush Fire, Ponderosa Fire etc</li>
+</ul></li>
+</ul></li>
+<li>Looking Forward:
+<ul>
+<li>Consideration of fire causes</li>
+<li>Predictive modelling of future wildfire burden</li>
+</ul></li>
+</ul>
 
 <div class="footer footer-default">
 

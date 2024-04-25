@@ -75,5 +75,124 @@
     "title": "Project 2",
     "section": "Repository Organization",
     "text": "Repository Organization\nMy repository contains the following:\n\nProject Proposal: proposal.qmd\nProject Presentation: presentation.qmd\nAbout: about.qmd\nProject Writeup: index.qmd\nWebsite: _quarto.yml\nProject Work: ProjectWork.Rmd\nData Folder\n\nContains datasets (wildfire perimeters, land management agency boundaries, merged dataset)\nContains R file for data cleanup"
+  },
+  {
+    "objectID": "presentation.html#section",
+    "href": "presentation.html#section",
+    "title": "Examining California Wildfires",
+    "section": "#",
+    "text": "#"
+  },
+  {
+    "objectID": "presentation.html#research-question",
+    "href": "presentation.html#research-question",
+    "title": "Examining California Wildfires",
+    "section": "Research Question",
+    "text": "Research Question\nHow does the burden of wildfires compare across different CA Counties, and how has this changed over time?\nI wanted to compare the intensity and frequency of wildfires across CA Counties over the years to better understand this issue, particularly as this issue progresses.\nTo do this, I created spatio-temporal visualizations of wildfires in California specifically considering:\n\nFrequency of fires: Number of fires counties experience in a year, Percent of total yearly fires occurring in each county\nIntensity of fires: Acres burnt in each county, Percent of total acres burnt in a year occuring in each county, average fire size (total acres burnt / number of fires)"
+  },
+  {
+    "objectID": "presentation.html#the-data",
+    "href": "presentation.html#the-data",
+    "title": "Examining California Wildfires",
+    "section": "The Data",
+    "text": "The Data\n\nfires_sf: wildfire perimeters from 1984 - 2020\n\nWFIGS Interagency Fire Perimeters data from the National Interagency Fire Center\n\nca_sf: county boundaries\n\nfrom sf package\n\nPAD_CA_sf: land management agency boundaries\n\nU.S. Geological Survey (USGS) Gap Analysis Project (GAP) in 2022: Protected Areas Database of the United States\n\nfires_county: merged fire data and county boundaries\nfire_manage: merged fire data and land management agency boundaries"
+  },
+  {
+    "objectID": "presentation.html#the-data-1",
+    "href": "presentation.html#the-data-1",
+    "title": "Examining California Wildfires",
+    "section": "The Data",
+    "text": "The Data"
+  },
+  {
+    "objectID": "presentation.html#land-management-agencies---counties",
+    "href": "presentation.html#land-management-agencies---counties",
+    "title": "Examining California Wildfires",
+    "section": "Land Management Agencies -> Counties",
+    "text": "Land Management Agencies -&gt; Counties\nI’d originally planned to compare the burden of wildfires on public lands across Land Management Agencies, but given the vast majority of public lands are managed by federal agencies, it follows most fires occurred on federal land.\nAnalysis along these lines would not be meaningful for me as I simply did not have enough data for wildfires on land managed by non-federal entities"
+  },
+  {
+    "objectID": "presentation.html#shifted-from-land-management-agencies-to-counties",
+    "href": "presentation.html#shifted-from-land-management-agencies-to-counties",
+    "title": "Examining California Wildfires",
+    "section": "Shifted from Land Management Agencies to Counties",
+    "text": "Shifted from Land Management Agencies to Counties\nI’d originally planned to compare the burden of wildfires on public lands across Land Management Agencies, but given the vast majority of public lands are managed by federal agencies, it follows most fires occurred on federal land.\nAnalysis along these lines would not be meaningful for me as I simply did not have enough data for wildfires on land managed by non-federal entities"
+  },
+  {
+    "objectID": "presentation.html#shift-from-land-management-agencies-to-counties",
+    "href": "presentation.html#shift-from-land-management-agencies-to-counties",
+    "title": "Examining California Wildfires",
+    "section": "Shift from Land Management Agencies to Counties",
+    "text": "Shift from Land Management Agencies to Counties"
+  },
+  {
+    "objectID": "presentation.html#wildfires-from-1984---2020",
+    "href": "presentation.html#wildfires-from-1984---2020",
+    "title": "Examining California Wildfires",
+    "section": "Wildfires from 1984 - 2020",
+    "text": "Wildfires from 1984 - 2020\nMapping wildfire perimeters, and indicating counties experiencing wildfires"
+  },
+  {
+    "objectID": "presentation.html#comparing-frequency-and-intensity-over-time-by-county",
+    "href": "presentation.html#comparing-frequency-and-intensity-over-time-by-county",
+    "title": "Examining California Wildfires",
+    "section": "Comparing Frequency and Intensity over time by County",
+    "text": "Comparing Frequency and Intensity over time by County\nFrequency: Total Fires\n\nAnimated MapLine Plot"
+  },
+  {
+    "objectID": "presentation.html#comparing-frequency-and-intensity-over-time-by-county-1",
+    "href": "presentation.html#comparing-frequency-and-intensity-over-time-by-county-1",
+    "title": "Examining California Wildfires",
+    "section": "Comparing Frequency and Intensity over time by County",
+    "text": "Comparing Frequency and Intensity over time by County\nIntensity: Total Acres Burnt\n\nAnimated MapLine Plot"
+  },
+  {
+    "objectID": "presentation.html#comparing-frequency-and-intensity-over-time-by-county-2",
+    "href": "presentation.html#comparing-frequency-and-intensity-over-time-by-county-2",
+    "title": "Examining California Wildfires",
+    "section": "Comparing Frequency and Intensity over time by County",
+    "text": "Comparing Frequency and Intensity over time by County\nIntensity: Average Fire Size\n\nAnimated MapLine Plot"
+  },
+  {
+    "objectID": "presentation.html#frequency-total-fires",
+    "href": "presentation.html#frequency-total-fires",
+    "title": "Examining California Wildfires",
+    "section": "Frequency: Total Fires",
+    "text": "Frequency: Total Fires\nComparing Frequency and Intensity over time by County\n\nAnimated MapLine Plot"
+  },
+  {
+    "objectID": "presentation.html#intensity-total-acres-burnt",
+    "href": "presentation.html#intensity-total-acres-burnt",
+    "title": "Examining California Wildfires",
+    "section": "Intensity: Total Acres Burnt",
+    "text": "Intensity: Total Acres Burnt\nComparing Frequency and Intensity over time by County\n\nAnimated MapLine Plot"
+  },
+  {
+    "objectID": "presentation.html#intensity-average-fire-size",
+    "href": "presentation.html#intensity-average-fire-size",
+    "title": "Examining California Wildfires",
+    "section": "Intensity: Average Fire Size",
+    "text": "Intensity: Average Fire Size\nComparing Frequency and Intensity over time by County\n\nAnimated MapLine Plot"
+  },
+  {
+    "objectID": "presentation.html#conclusions",
+    "href": "presentation.html#conclusions",
+    "title": "Examining California Wildfires",
+    "section": "Conclusions",
+    "text": "Conclusions\n\nThe burden of wildfires is increasing across all of California\n\nSome counties, like Lassen Riverside and San Diego, are particularly impacted\nSome years had particularly devestating fire seasons: 2018 and 2012\n\n2018 had Carr Fire, Mendocino Complex Fire, Camp Fire etc\n2012 had Rush Fire, Ponderosa Fire etc\n\n\nLooking Forward:\n\nConsideration of fire causes\nPredictive modelling of future wildfire burden"
+  },
+  {
+    "objectID": "presentation.html#across-all-of-california",
+    "href": "presentation.html#across-all-of-california",
+    "title": "Examining California Wildfires",
+    "section": "Across all of California",
+    "text": "Across all of California\n\nFire CountAcres BurntAverage Fire Size"
+  },
+  {
+    "objectID": "presentation.html#wildfires-across-all-of-california",
+    "href": "presentation.html#wildfires-across-all-of-california",
+    "title": "Examining California Wildfires",
+    "section": "Wildfires Across all of California",
+    "text": "Wildfires Across all of California\n\nFire CountAcres BurntAverage Fire Size"
   }
 ]
