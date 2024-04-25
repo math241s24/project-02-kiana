@@ -62,8 +62,6 @@ fires_sf: wildfire perimeters from 1984 - 2020
 
 ca_sf: county boundaries
 
--   from American Community Survey (ACS) Census data
-
 -   58 obs of 13 var
 
 PAD_CA_sf: land management agency boundaries
