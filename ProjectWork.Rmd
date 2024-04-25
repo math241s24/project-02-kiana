@@ -18,6 +18,7 @@ library(gifski)
 library(knitr)
 library(kableExtra)
 library(transformr)
+library(ggtext)
 ```
 
 #bringing over clean data 
@@ -27,9 +28,13 @@ library(transformr)
 - fire_county (merged fire and county data)
 ```{r}
 fires_sf <- readRDS('Data/fires_sf.rds')
+fires_sf$discover_yr <- factor(fires_sf$discover_yr)
 ca_sf <- readRDS('Data/ca_sf.rds')
 fires_manage <- readRDS('Data/fires_manage.rds')
 fires_county <- readRDS('Data/fires_county.rds')
+fires_county_grp <- readRDS('Data/fires_county_grp.rds')
+county_fire_stats <- readRDS('Data/county_fire_stats.rds')
+
 ```
 
 
@@ -72,7 +77,7 @@ area_summary <- PAD_CA %>%
 print(area_summary)
 
 #piechart visualization of management level
-ggplot(area_summary, aes(x = "", y = percentage, fill = mang_level, label = paste0(round(percentage), "%"))) +
+pie_landmang_perclands <- ggplot(area_summary, aes(x = "", y = percentage, fill = mang_level, label = paste0(round(percentage), "%"))) +
   geom_bar(stat = "identity", width = 1) +
   geom_text(position = position_stack(vjust = 0.5), aes(x = 1.55), color = "black", size = 3) +
   coord_polar("y", start = 0) +
@@ -82,6 +87,8 @@ ggplot(area_summary, aes(x = "", y = percentage, fill = mang_level, label = past
   theme_void() +
   theme(legend.position = "bottom") +
   scale_fill_brewer(palette = "Set2")
+
+ggsave("pie_landmang_perclands.png", pie_landmang_perclands, width = 10, height = 10, units = "in")
 ```
 Results:
 mang_level                    total_area percentage
@@ -99,7 +106,7 @@ fire_counts_manglvl <- fires_manage %>%
   summarize(fire_count = n()) %>%
   mutate(percentage = (fire_count / sum(fire_count)) * 100)
 
-ggplot(fire_counts_manglvl, aes(x = "", y = percentage, fill = mang_level, label = paste0(round(percentage), "%"))) +
+pie_landmang_percfires <- ggplot(fire_counts_manglvl, aes(x = "", y = percentage, fill = mang_level, label = paste0(round(percentage), "%"))) +
   geom_bar(stat = "identity", width = 1) +
   geom_text(position = position_stack(vjust = 0.5), aes(x = 1.55), color = "black", size = 3) +
   coord_polar("y", start = 0) +
@@ -114,6 +121,8 @@ ggplot(fire_counts_manglvl, aes(x = "", y = percentage, fill = mang_level, label
 #17.4% of fires occurred on State Land, 120 fires
 #nothing else of real importance
 #and this is from 1984 - 2020 ... 
+
+ggsave("pie_landmang_percfires.png", pie_landmang_percfires, width = 10, height = 10, units = "in")
 ```
 
 Over Time
@@ -162,8 +171,6 @@ ggplot(fire_counts_manglvlyr, aes(x = discover_yr, y = avg_size, color = mang_le
 Animated Plot of Wildfires each year:
 - without boundaries
 ```{r}
-fires_sf$discover_yr <- factor(fires_sf$discover_yr)
-
 #Animated plot of fires_sf without any boundaries
 ggplot() +
   geom_sf(data = fires_sf, aes(fill = factor(discover_yr))) +
@@ -178,67 +185,56 @@ ggplot() +
 - with county boundaries
 ```{r}
 #animated plot of wildfires each year with county boundaries
-fires_county_grp <- fires_county %>%
-  group_by(county_name, discover_yr) %>%
-  summarize(fire_count = n(), total_acres = sum(acres_total)) %>%
-  ungroup() %>%
-  group_by(discover_yr) %>%
-  mutate(total_fires = sum(fire_count),
-         total_acres_burnt = sum(total_acres),
-         numfires_perc = round((fire_count / total_fires) * 100),
-         acresfires_perc = round((total_acres / total_acres_burnt) * 100),
-         avg_size = total_acres / fire_count) %>%
-  ungroup()
 
-ggplot() +
+anim_firescounties <- ggplot() +
   geom_sf(data = ca_sf, aes(), fill = NA, color = "black", size = 1.2) +
   geom_sf(data = fires_county_grp, aes(fill = county_name), show.legend = FALSE) +
-  labs(title = 'Year: {closest_state}') +
+  labs(title = "Wildfire Perimeters",
+       subtitle = 'Year: {closest_state}') +
   theme_void() +
   transition_states(discover_yr, 
-                  transition_length = 5, 
-                  state_length = 5)
+                  transition_length = 10, 
+                  state_length = 10)
 
-```
+anim_save("anim_firescounties.gif", anim_firescounties, renderer = gifski_renderer(), path = "PrerenderedPlots/")
 
-```{r}
-fires_county <- fires_county %>%
-  group_by(year, county_name) %>%
-  summarise(total_fires_in_county = sum(fires_count), .groups = 'drop') %>%
-  mutate(percentage = (total_fires_in_county / total_fires) * 100)
-
-top_counties <- fires_county %>%
-  arrange(year, desc(percentage)) %>%
-  group_by(year) %>%
-  slice_max(order_by = percentage, n = 5)
-
-
-p <- ggplot() +
-  geom_sf(data = ca_sf, aes(geometry = geometry), fill = NA, color = "black") +  
-  geom_sf(data = fires_county, aes(fill = percentage), show.legend = FALSE) +  # Here, you color by counties
-  geom_sf_text(data = top_counties, aes(label = paste(county_name, " - ", round(percentage, 2), "%")), size = 3, hjust = 1.5) + # and the text is only used for the top 5
-  scale_fill_viridis_c(option = "C", begin = 0.2, end = 0.8, name = "Percentage of Fires") +
-  labs(title = 'Year: {frame_time}', subtitle = "Top 5 Counties by Fire Proportion") +
+#animated plot of counties with wildfires
+anim_firescounties_grp <- ggplot() +
+  geom_sf(data = ca_sf, aes(), fill = NA, color = "black", size = 1.2) +
+  geom_sf(data = county_fire_stats, aes(fill = county_name), show.legend = FALSE) +
+  labs(title = "Counties Experiencing Wildfires",
+       subtitle = 'Year: {closest_state}') +
   theme_void() +
-  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))
-```
+  transition_states(discover_yr, 
+                  transition_length = 10, 
+                  state_length = 10)
 
+anim_save("anim_firescounties_grp.gif", anim_firescounties_grp, renderer = gifski_renderer(), path = "PrerenderedPlots/")
+
+```
 
 Comparing Frequency and Intensity of Fires over time by County (ALL COUNTIES)
-- create maps for of county boundaries colored by these variables
 ```{r}
 ggplot(fires_county_grp, aes(x = discover_yr, y = fire_count, color = county_name)) +
   geom_line() +
   labs(title = "CA Wildfires across Counties: Number of Fires",
        x = "Year Discovered",
        y = "Number of Fires",
-       color = "County")
+       color = "County") +
+  theme(legend.position = "none", legend.title = element_blank())
 
 ggplot(fires_county_grp, aes(x = discover_yr, y = numfires_perc, color = county_name)) +
   geom_line() +
   labs(title = "CA Wildfires across Counties: Percentage of Fires",
        x = "Year Discovered",
        y = "Percentage of Total Fires",
+       color = "County")
+
+ggplot(fires_county_grp, aes(x = discover_yr, y = total_acres, color = county_name)) +
+  geom_line() +
+  labs(title = "CA Wildfires across Counties: Total Acres Burnt",
+       x = "Year Discovered",
+       y = "Acres Burnt",
        color = "County")
 
 ggplot(fires_county_grp, aes(x = discover_yr, y = acresfires_perc, color = county_name)) +
@@ -257,17 +253,92 @@ ggplot(fires_county_grp, aes(x = discover_yr, y = avg_size, color = county_name)
 ```
 
 
+Mapping ^^ 
 
-
-
-Statistics and Analysis
 ```{r}
-#grouping and calculating:
-#percent of total number of fires by year/county
-#percent of total acres burned in a year by county
-#average_size of fires in county by year (acres burnt / number of fires)
-#^^ this is all present in the fires_county_grp
+anim_totfires_county <- ggplot() +
+  geom_sf(data = ca_sf, aes(), fill = NA, color = "black", size = 1.2) +
+  geom_sf(data = county_fire_stats, aes(fill = fire_count), show.legend = "fill") +
+  labs(title = "Wildfire Frequency",
+       subtitle = 'Year: {closest_state}',
+       fill = "Number of Wildfires") +
+  theme_void() +
+  scale_fill_gradient(low = "#ffdc6b", high = "#ad2723") +
+  transition_states(discover_yr, 
+                    transition_length = 10, 
+                    state_length = 10)
 
+anim_save("anim_totfires_county.gif", anim_totfires_county, renderer = gifski_renderer())
+
+
+anim_percfires_county <- ggplot() +
+  geom_sf(data = ca_sf, aes(), fill = NA, color = "black", size = 1.2) +
+  geom_sf(data = county_fire_stats, aes(fill = numfires_perc), show.legend = "fill") +
+  labs(title = "Wildfire Frequency",
+       subtitle = 'Year: {closest_state}',
+       fill = "Percentage of Yearly Wildfires") +
+  theme_void() +
+  scale_fill_gradient(low = "#ffdc6b", high = "#ad2723") +
+  transition_states(discover_yr, 
+                    transition_length = 10, 
+                    state_length = 10)
+
+anim_save("anim_percfires_county.gif", anim_percfires_county, renderer = gifski_renderer())
+
+
+anim_totacres_county <- ggplot() +
+  geom_sf(data = ca_sf, aes(), fill = NA, color = "black", size = 1.2) +
+  geom_sf(data = county_fire_stats, aes(fill = total_acres), show.legend = "fill") +
+  labs(title = "Total Acres Burnt",
+       subtitle = 'Year: {closest_state}',
+       fill = "Acres Burnt") +
+  theme_void() +
+  scale_fill_gradient(low = "#ffdc6b", high = "#ad2723") +
+  transition_states(discover_yr, 
+                    transition_length = 10, 
+                    state_length = 10)
+
+anim_save("anim_totacres_county.gif", anim_totacres_county, renderer = gifski_renderer())
+
+anim_avgsize_county <- ggplot() +
+  geom_sf(data = ca_sf, aes(), fill = NA, color = "black", size = 1.2) +
+  geom_sf(data = county_fire_stats, aes(fill = avg_size), show.legend = "fill") +
+  labs(title = "Fire Intensity by County",
+       subtitle = 'Year: {closest_state}',
+       fill = "Acres Burnt/Number of Fires") +
+  theme_void() +
+  scale_fill_gradient(low = "#ffdc6b", high = "#ad2723") +
+  transition_states(discover_yr, 
+                    transition_length = 10, 
+                    state_length = 10)
+
+anim_save("anim_avgsize_county.gif", anim_avgsize_county, renderer = gifski_renderer())
+```
+
+
+
+not working: trying to add an animated updating list of top 5 counties to animated map of wildfires with county boundaries
+```{r}
+top_counties_percnum <- fires_county_grp %>%
+  arrange(discover_yr, desc(numfires_perc)) %>%
+  group_by(discover_yr) %>%
+  slice_max(order_by = numfires_perc, n = 5)
+
+top_counties_percnum <- top_counties_percnum %>%
+  filter(!is.na(WKT)) %>%
+  st_as_sf(wkt = "WKT")
+
+ggplot() +
+  geom_sf(data = ca_sf, aes(geometry = geometry), fill = NA, color = "black") +  
+  geom_sf(data = fires_county_grp, aes(fill = as.factor(county_name)), show.legend = FALSE) +
+  geom_sf_text(data = top_counties_percnum, aes(label = paste(county_name, " - ", round(numfires_perc, 2), "%")), size = 3, hjust = 1.5) + 
+  scale_fill_viridis_d(option = "C", begin = 0.2, end = 0.8, name = "Percentage of Fires") +
+  labs(title = 'Year: {frame_time}', subtitle = "Top 5 Counties by Fire Proportion") +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+
+  transition_states(discover_yr, 
+                    transition_length = 5, 
+                    state_length = 5)
 ```
 
 
