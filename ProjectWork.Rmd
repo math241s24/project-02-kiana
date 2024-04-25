@@ -65,6 +65,7 @@ Justifying Management -> County:
 
 Considering percentage of total acres managed by each level
 ```{r, eval = FALSE}
+#absolutely can not push this dataset rip
 PAD_CA_sf <- readRDS('Data/PAD_CA_sf.rds')
 total_acres <- sum(PAD_CA_sf$GIS_Acres, na.rm = TRUE)
 
