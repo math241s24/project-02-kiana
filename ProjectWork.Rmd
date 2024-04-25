@@ -316,29 +316,3 @@ anim_save("anim_avgsize_county.gif", anim_avgsize_county, renderer = gifski_rend
 ```
 
 
-
-not working: trying to add an animated updating list of top 5 counties to animated map of wildfires with county boundaries
-```{r}
-top_counties_percnum <- fires_county_grp %>%
-  arrange(discover_yr, desc(numfires_perc)) %>%
-  group_by(discover_yr) %>%
-  slice_max(order_by = numfires_perc, n = 5)
-
-top_counties_percnum <- top_counties_percnum %>%
-  filter(!is.na(WKT)) %>%
-  st_as_sf(wkt = "WKT")
-
-ggplot() +
-  geom_sf(data = ca_sf, aes(geometry = geometry), fill = NA, color = "black") +  
-  geom_sf(data = fires_county_grp, aes(fill = as.factor(county_name)), show.legend = FALSE) +
-  geom_sf_text(data = top_counties_percnum, aes(label = paste(county_name, " - ", round(numfires_perc, 2), "%")), size = 3, hjust = 1.5) + 
-  scale_fill_viridis_d(option = "C", begin = 0.2, end = 0.8, name = "Percentage of Fires") +
-  labs(title = 'Year: {frame_time}', subtitle = "Top 5 Counties by Fire Proportion") +
-  theme_void() +
-  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+
-  transition_states(discover_yr, 
-                    transition_length = 5, 
-                    state_length = 5)
-```
-
-
