@@ -1,7 +1,7 @@
 ---
-title: ""
+title: "Examining California Wildfires"
 subtitle: "Project 2"
-author: ""
+author: "Kiana Fields"
 format: html
 editor: visual
 execute:
@@ -10,6 +10,295 @@ execute:
   message: false
 ---
 
-## Abstract
-
 ## Introduction
+
+California is known to have intense and severe wildfire seasons, that can have devastating impacts both to communities immediately impacted by the burn through destruction of property and lives lost, as well as far reaching consequences like smoke impacting other communities as well. In order to develop effective management strategies and effectively allocate resources, it is essential to understand the burden of these wildfire events.\
+\
+My project sought to address one aspect of this by considering the intensity and frequency of wildfires across California Counties, as measured by number of fires, acres burnt, and average fire size.
+
+To do this, I created spatio-temporal visualizations of wildfires in California, and compared frequency/intensity across counties.
+
+### Research Question {.smaller}
+
+#### How does the burden of wildfires compare across different CA Counties, and how has this changed over time?
+
+I wanted to compare the intensity and frequency of wildfires across CA Counties over the years to better understand this issue, particularly as this issue progresses.
+
+To do this, I created spatio-temporal visualizations of wildfires in California specifically considering:
+
+-   Frequency of fires: Number of fires counties experience in a year, Percent of total yearly fires occurring in each county
+
+-   Intensity of fires: Acres burnt in each county, Percent of total acres burnt in a year occuring in each county, average fire size (total acres burnt / number of fires)
+
+### The Data:
+
+-   fires_sf: wildfire perimeters from 1984 - 2020
+
+    -   WFIGS Interagency Fire Perimeters data from the National Interagency Fire Center
+
+-   ca_sf: county boundaries
+
+    -   from sf package
+
+-   PAD_CA_sf: land management agency boundaries
+
+    -   U.S. Geological Survey (USGS) Gap Analysis Project (GAP) in 2022: Protected Areas Database of the United States
+
+-   fires_county: merged fire data and county boundaries
+
+-   fire_manage: merged fire data and land management agency boundaries
+
+-   county_fire_stats: wrangled with fires_county to make some calculations regarding frequency and intensity
+
+```{r importing data, echo = FALSE, include = FALSE}
+library(readr)
+library(tidyverse)
+library(tidycensus)
+library(flextable)
+library(sf)
+library(tigris)
+library(tmap)
+library(RColorBrewer)
+library(countdown)
+library(gt)
+library(readxl)
+library(gganimate)
+library(gifski)
+library(knitr)
+library(kableExtra)
+library(transformr)
+library(ggtext)
+
+fires_sf <- readRDS('Data/fires_sf.rds')
+fires_sf$discover_yr <- factor(fires_sf$discover_yr)
+ca_sf <- readRDS('Data/ca_sf.rds')
+fires_manage <- readRDS('Data/fires_manage.rds')
+fires_county <- readRDS('Data/fires_county.rds')
+fires_county_grp <- readRDS('Data/fires_county_grp.rds')
+county_fire_stats <- readRDS('Data/county_fire_stats.rds')
+```
+
+```{r showing data}
+county_fire_stats %>%
+  select(county_name, discover_yr, fire_count, total_acres, avg_size) 
+
+```
+
+## Approach
+
+### Shifting from Land Management Agencies to Counties
+
+After some preliminary data exploration it became clear that comparing wildfires across land management agency would not yield useful results given that the vast majority of public lands are federally managed (91% of total acreage, followed by 4% state, 2% local government etc), and it followed that the vast majority of wildfires occurring on public lands happened on federal land (Federal Land: 510 fires, 74.3%. State Land: 120 fires, 17.4%). In a data set spanning 1984 - 2020, there were years in which no fires occurred on non-federal land. Analysis would not be meaningful or statistically significant as there is simply not enough data for wildfires on land managed by non-federal entities.
+
+Recognizing this, I shifted my project goal to be comparing wildfires across different CA Counties, for an analysis of changing wildfires over time.
+
+::: {style="display: flex; flex-direction: row;"}
+<img src="PrerenderedPlots/pie_landmang_perclands.png" width="500" height="500"/> <img src="PrerenderedPlots/pie_landmang_percfires.png" width="500" height="500"/>
+:::
+
+The PAD_CA dataset is too large to push to github so I have included prerendered plots comparing land use and fire burden across land management agencies as photos. Code can be viewed in project repo.
+
+### Wildfires Across California from 1984 - 2020
+
+I began by mapping wildfire perimeters and indicating counties experiencing wildfires to get a better sense of this issue.
+
+::: {style="display: flex; flex-direction: row;"}
+<img src="PrerenderedPlots/anim_firescounties.gif" width="500" height="500"/> <img src="PrerenderedPlots/anim_firescounties_grp.gif" width="500" height="500"/>
+:::
+
+I then created line graphs considering fire count, acres burnt, and fire size in order to compare this issue across time.
+
+##### Fire Count
+
+```{r fire count all CA, fig.width=4, fig.height=3, quarto=TRUE, echo=FALSE}
+totfires_ca <- fires_county_grp %>%
+  select(discover_yr, fire_count)  
+
+totfires_ca <- st_drop_geometry(totfires_ca)
+
+totfires_ca <- totfires_ca %>% 
+  group_by(discover_yr) %>%
+  summarize(total_firecount = sum(fire_count)) %>%
+  arrange(desc(total_firecount))
+
+ggplot(totfires_ca, aes(x = discover_yr, y = total_firecount)) +
+  geom_line() +
+  labs(title = "CA Wildfires: Number of Fires",
+       x = "Year Discovered",
+       y = "Number of Fires") 
+  
+```
+
+##### Acres Burnt
+
+```{r total acres all ca, fig.width=4, fig.height=3, quarto=TRUE, echo=FALSE}
+totacres_ca <- fires_county_grp %>%
+  select(discover_yr, total_acres_burnt)  
+
+totacres_ca <- st_drop_geometry(totacres_ca)
+
+totacres_ca <- totacres_ca %>% 
+  group_by(discover_yr) %>%
+  summarize(sum_acres_burnt = sum(total_acres_burnt)) %>%
+  arrange(desc(sum_acres_burnt)) 
+
+ggplot(totacres_ca, aes(x = discover_yr, y = sum_acres_burnt)) +
+  geom_line() +
+  labs(title = "CA Wildfires: Acres Burnt",
+       x = "Year Discovered",
+       y = "Acres Burnt") 
+  
+```
+
+##### Average Fire Size
+
+```{r avg fire size all CA, fig.width=4, fig.height=3, quarto=TRUE, echo=FALSE}
+avgfiresize_ca <- fires_county_grp %>%
+  select(discover_yr, avg_size)  
+
+avgfiresize_ca <- st_drop_geometry(avgfiresize_ca)
+
+avgfiresize_ca <- avgfiresize_ca %>% 
+  group_by(discover_yr) %>%
+  summarize(mean_size = mean(avg_size)) %>%
+  arrange(desc(mean_size))
+
+ggplot(avgfiresize_ca, aes(x = discover_yr, y = mean_size)) +
+  geom_line() +
+  labs(title = "CA Wildfires: Average Fire Size",
+       x = "Year Discovered",
+       y = "Acres Burnt / Number of Fires") 
+  
+```
+
+### Wildfires Across CA Counties from 1984 - 2020
+
+I then focused my analysis on county comparisons looking at the same variables, creating maps and line plots.
+
+#### Frequency: Total Fires
+
+::: {style="display: flex; flex-direction: row;"}<img src="PrerenderedPlots/anim_totfires_county.gif" width="500" height="500"/>:::
+
+```{r top5 counties total fires line plot, fig.width=8, fig.height=7, quarto=TRUE, echo=FALSE}
+totfires_county <- fires_county_grp %>%
+  select(county_name, discover_yr, fire_count)  
+
+totfires_county <- st_drop_geometry(totfires_county)
+
+totfires_county_top5 <- totfires_county %>% 
+  group_by(county_name) %>%
+  summarize(total_firecount = sum(fire_count)) %>%
+  arrange(desc(total_firecount)) %>% 
+  slice_head(n = 5) 
+
+totfires_county <- totfires_county %>% 
+  filter(county_name == "Lassen" |
+           county_name == "Kern" |
+           county_name == "Riverside"|
+           county_name == "San Diego"|
+           county_name == "San Bernardino")
+
+ggplot(totfires_county, aes(x = discover_yr, y = fire_count, color = county_name)) +
+  geom_line() +
+  labs(title = "CA Wildfires across Counties: Number of Fires",
+       subtitle = "Top 5 Counties Only",
+       x = "Year Discovered",
+       y = "Number of Fires",
+       color = "County") +
+  scale_color_manual(values = c("#B06AE6", "#E66AA0", "#6AADE6", "#79C25E", "#F6A144"),
+                     labels = c("Kern - 71 fires",
+                                "Lassen - 110 fires",
+                                "Riverside - 58", 
+                                "San Bernardino - 32 fires", 
+                                "San Diego - 36 fires"))
+  
+```
+
+#### Intensity: Total Acres Burnt 
+
+::: {style="display: flex; flex-direction: row;"}
+<img src="PrerenderedPlots/anim_totacres_county.gif" width="500" height="500"/>
+:::
+
+```{r top 5 counties total acres line plot, fig.width=8, fig.height=7, quarto=TRUE, echo=FALSE}
+totacres_county <- fires_county_grp %>%
+  select(county_name, discover_yr, total_acres_burnt)  
+
+totacres_county <- st_drop_geometry(totacres_county)
+
+totacres_county_top5 <- totacres_county %>% 
+  group_by(county_name) %>%
+  summarize(sum_acres_burnt = sum(total_acres_burnt)) %>%
+  arrange(desc(sum_acres_burnt)) %>% 
+  slice_head(n = 5) 
+
+totacres_county <- totacres_county %>% 
+  filter(county_name == "Riverside" |
+           county_name == "Shasta"|
+           county_name == "Lassen"|
+           county_name == "Mono"|
+           county_name == "San Diego")
+
+ggplot(totacres_county, aes(x = discover_yr, y = total_acres_burnt, color = county_name)) +
+  geom_line() +
+  labs(title = "CA Wildfires across Counties: Acres Burnt",
+       subtitle = "Top 5 Counties Only",
+       x = "Year Discovered",
+       y = "Acres Burnt",
+       color = "County") +
+  scale_color_manual(values = c("#B06AE6", "#E66AA0", "#6AADE6", "#79C25E", "#F6A144"),
+                     labels = c("Lassen - 7,573,045 acres",
+                                "Mono - 7,254,922 acres",
+                                "Riverside - 7,573,045 acres", 
+                                "San Diego - 6,960,941 acres", 
+                                "Shasta - 7,086,875 acres"))
+  
+```
+
+#### Intensity: Fire Size
+
+::: {style="display: flex; flex-direction: row;"}
+<img src="PrerenderedPlots/anim_avgsize_county.gif" width="500" height="500"/>
+:::
+
+```{r top 5 counties average fire size line plot, fig.width=8, fig.height=7, quarto=TRUE, echo=FALSE}
+avgfiresize_county <- fires_county_grp %>%
+  select(county_name, discover_yr, avg_size)  
+
+avgfiresize_county <- st_drop_geometry(avgfiresize_county)
+
+avgfiresize_county_top5 <- avgfiresize_county %>% 
+  group_by(county_name) %>%
+  summarize(mean_avg_size = mean(avg_size)) %>%
+  arrange(desc(mean_avg_size)) %>% 
+  slice_head(n = 5) 
+
+avgfiresize_county <- avgfiresize_county %>% 
+  filter(county_name == "Glenn" |
+           county_name == "Ventura"|
+           county_name == "Santa Barbara"|
+           county_name == "Mariposa"|
+           county_name == "Tuolumne")
+
+ggplot(avgfiresize_county, aes(x = discover_yr, y = avg_size, color = county_name)) +
+  geom_line() +
+  labs(title = "CA Wildfires across Counties: Average Fire Size",
+       subtitle = "Top 5 Counties Only",
+       x = "Year Discovered",
+       y = "Average Fire Size (total acres burnt / number of fires)",
+       color = "County") +
+  scale_color_manual(values = c("#B06AE6", "#E66AA0", "#6AADE6", "#79C25E", "#F6A144"),
+                     labels = c("Glenn - 207,109 acres",
+                                "Mariposa - 78,125 acres",
+                                "Santa Barbara - 121,939 acres", 
+                                "Tuolumne - 76,641 acres", 
+                                "Ventura - 149,678 acres"))
+  
+```
+
+## Conclusions
+
+Based on this data exploration and visualizations I concluded that the burden of wildfires is increasing across all of California. Some counties, like Lassen, Riverside, and San Diego, are particularly impacted, being in the top 5 counties experienced variables associated with wildfire burden. 
+Comparing across time, it was clear that some years were particularly devestating fire seasons like 2018 and 2012. This makes sense historically as 2018 had large fires like the Carr Fire, Mendocino Complex Fire, and the Camp Fire while 2012 had the Rush Fire, and Ponderosa Fire.
+Limitations of my project includes a lack of data as some years had more data then others. Additionally my approach was limited as the burden of wildfires can also be measured in variables like destruction, lives lost, and the impact of smoke. Data regarding these variables was not included in my datasets but could be investigated in further analysis.\
+Further research using these datasets could include consideration of wildfire causes and analysis of how that has changed over time and how it compares across counties. This would give a more holistic understanding of this issue particularly as it applies to wildfire management strategies.
