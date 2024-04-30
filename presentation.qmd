@@ -104,10 +104,11 @@ Mapping wildfire perimeters, and indicating counties experiencing wildfires
 <img src="PrerenderedPlots/anim_firescounties.gif" width="500" height="500"/> <img src="PrerenderedPlots/anim_firescounties_grp.gif" width="500" height="500"/>
 :::
 
-
 ## Wildfires Across all of California
+
 ::: panel-tabset
 ##### Fire Count
+
 ```{r fire count all CA, fig.width=4, fig.height=3, quarto=TRUE, echo=FALSE}
 totfires_ca <- fires_county_grp %>%
   select(discover_yr, fire_count)  
@@ -126,7 +127,9 @@ ggplot(totfires_ca, aes(x = discover_yr, y = total_firecount)) +
        y = "Number of Fires") 
   
 ```
+
 ##### Acres Burnt
+
 ```{r total acres all ca, fig.width=4, fig.height=3, quarto=TRUE, echo=FALSE}
 totacres_ca <- fires_county_grp %>%
   select(discover_yr, total_acres_burnt)  
@@ -147,6 +150,7 @@ ggplot(totacres_ca, aes(x = discover_yr, y = sum_acres_burnt)) +
 ```
 
 ##### Average Fire Size
+
 ```{r avg fire size all CA, fig.width=4, fig.height=3, quarto=TRUE, echo=FALSE}
 avgfiresize_ca <- fires_county_grp %>%
   select(discover_yr, avg_size)  
@@ -168,13 +172,18 @@ ggplot(avgfiresize_ca, aes(x = discover_yr, y = mean_size)) +
 :::
 
 ## Frequency: Total Fires {.smaller}
+
 #### Comparing Frequency and Intensity over time by County
+
 ::: panel-tabset
 ##### Animated Map
+
 ::: {style="display: flex; flex-direction: row;"}
 <img src="PrerenderedPlots/anim_totfires_county.gif" width="500" height="500"/>
 :::
+
 ##### Line Plot
+
 ```{r top5 counties total fires line plot, fig.width=8, fig.height=7, quarto=TRUE, echo=FALSE}
 totfires_county <- fires_county_grp %>%
   select(county_name, discover_yr, fire_count)  
@@ -212,13 +221,18 @@ ggplot(totfires_county, aes(x = discover_yr, y = fire_count, color = county_name
 :::
 
 ## Intensity: Total Acres Burnt {.smaller}
+
 #### Comparing Frequency and Intensity over time by County
+
 ::: panel-tabset
 ##### Animated Map
+
 ::: {style="display: flex; flex-direction: row;"}
 <img src="PrerenderedPlots/anim_totacres_county.gif" width="500" height="500"/>
 :::
+
 ##### Line Plot
+
 ```{r top 5 counties total acres line plot, fig.width=8, fig.height=7, quarto=TRUE, echo=FALSE}
 totacres_county <- fires_county_grp %>%
   select(county_name, discover_yr, total_acres_burnt)  
@@ -256,13 +270,18 @@ ggplot(totacres_county, aes(x = discover_yr, y = total_acres_burnt, color = coun
 :::
 
 ## Intensity: Average Fire Size {.smaller}
+
 #### Comparing Frequency and Intensity over time by County
+
 ::: panel-tabset
 ##### Animated Map
+
 ::: {style="display: flex; flex-direction: row;"}
 <img src="PrerenderedPlots/anim_avgsize_county.gif" width="500" height="500"/>
 :::
+
 ##### Line Plot
+
 ```{r top 5 counties average fire size line plot, fig.width=8, fig.height=7, quarto=TRUE, echo=FALSE}
 avgfiresize_county <- fires_county_grp %>%
   select(county_name, discover_yr, avg_size)  
@@ -300,14 +319,15 @@ ggplot(avgfiresize_county, aes(x = discover_yr, y = avg_size, color = county_nam
 :::
 
 ## Conclusions {.smaller}
-+ The burden of wildfires is increasing across all of California
-  - Some counties, like Lassen Riverside and San Diego, are particularly impacted
-  - Some years had particularly devestating fire seasons: 2018 and 2012
-      - 2018 had Carr Fire, Mendocino Complex Fire, Camp Fire etc
-      - 2012 had Rush Fire, Ponderosa Fire etc
-+ Limitations:
-  - Some years have less data than others
-  - Burden could also be measured in destruction, lives lost, impact of smoke etc
-+ Looking Forward:
-  - Consideration of fire causes
-  - Predictive modelling of future wildfire burden
+
+-   The burden of wildfires is increasing across all of California
+    -   Some counties, like Lassen Riverside and San Diego, are particularly impacted
+    -   Some years had particularly devestating fire seasons: 2018 and 2012
+        -   2018 had Carr Fire, Mendocino Complex Fire, Camp Fire etc
+        -   2012 had Rush Fire, Ponderosa Fire etc
+-   Limitations:
+    -   Some years have less data than others
+    -   Burden could also be measured in destruction, lives lost, impact of smoke etc
+-   Looking Forward:
+    -   Consideration of fire causes
+    -   Predictive modelling of future wildfire burden
