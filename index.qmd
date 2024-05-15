@@ -214,7 +214,7 @@ ggplot(totfires_county, aes(x = discover_yr, y = fire_count, color = county_name
   
 ```
 
-#### Intensity: Total Acres Burnt 
+#### Intensity: Total Acres Burnt
 
 ::: {style="display: flex; flex-direction: row;"}
 <img src="PrerenderedPlots/anim_totacres_county.gif" width="500" height="500"/>
@@ -298,7 +298,5 @@ ggplot(avgfiresize_county, aes(x = discover_yr, y = avg_size, color = county_nam
 
 ## Conclusions
 
-Based on this data exploration and visualizations I concluded that the burden of wildfires is increasing across all of California. Some counties, like Lassen, Riverside, and San Diego, are particularly impacted, being in the top 5 counties experienced variables associated with wildfire burden. 
-Comparing across time, it was clear that some years were particularly devestating fire seasons like 2018 and 2012. This makes sense historically as 2018 had large fires like the Carr Fire, Mendocino Complex Fire, and the Camp Fire while 2012 had the Rush Fire, and Ponderosa Fire.
-Limitations of my project includes a lack of data as some years had more data then others. Additionally my approach was limited as the burden of wildfires can also be measured in variables like destruction, lives lost, and the impact of smoke. Data regarding these variables was not included in my datasets but could be investigated in further analysis.\
+Based on this data exploration and visualizations I concluded that the burden of wildfires is increasing across all of California. Some counties, like Lassen, Riverside, and San Diego, are particularly impacted, being in the top 5 counties experienced variables associated with wildfire burden. Comparing across time, it was clear that some years were particularly devestating fire seasons like 2018 and 2012. This makes sense historically as 2018 had large fires like the Carr Fire, Mendocino Complex Fire, and the Camp Fire while 2012 had the Rush Fire, and Ponderosa Fire. Limitations of my project includes a lack of data as some years had more data then others. Additionally my approach was limited as the burden of wildfires can also be measured in variables like destruction, lives lost, and the impact of smoke. Data regarding these variables was not included in my datasets but could be investigated in further analysis.\
 Further research using these datasets could include consideration of wildfire causes and analysis of how that has changed over time and how it compares across counties. This would give a more holistic understanding of this issue particularly as it applies to wildfire management strategies.

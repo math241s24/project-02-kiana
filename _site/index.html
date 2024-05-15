@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="">
+<meta name="author" content="Kiana Fields">
 
-<title>Project 2 -</title>
+<title>Wildfires in California - Examining California Wildfires</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -46,7 +46,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -55,8 +61,10 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -67,11 +75,11 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Project 2</span>
+    <span class="navbar-title">Wildfires in California</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -81,32 +89,32 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
- <span class="menu-text">Project</span></a>
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Project</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./proposal.html" rel="" target="">
- <span class="menu-text">Proposal</span></a>
+    <a class="nav-link" href="./proposal.html"> 
+<span class="menu-text">Proposal</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./presentation.html" rel="" target="">
- <span class="menu-text">Presentation</span></a>
+    <a class="nav-link" href="./presentation.html"> 
+<span class="menu-text">Presentation</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/math241s24/project-02" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/math241s24/project-02-kiana"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -119,8 +127,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#research-question" id="toc-research-question" class="nav-link" data-scroll-target="#research-question">Research Question</a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The Data:</a></li>
+  </ul></li>
+  <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach">Approach</a>
+  <ul class="collapse">
+  <li><a href="#shifting-from-land-management-agencies-to-counties" id="toc-shifting-from-land-management-agencies-to-counties" class="nav-link" data-scroll-target="#shifting-from-land-management-agencies-to-counties">Shifting from Land Management Agencies to Counties</a></li>
+  <li><a href="#wildfires-across-california-from-1984---2020" id="toc-wildfires-across-california-from-1984---2020" class="nav-link" data-scroll-target="#wildfires-across-california-from-1984---2020">Wildfires Across California from 1984 - 2020</a></li>
+  <li><a href="#wildfires-across-ca-counties-from-1984---2020" id="toc-wildfires-across-ca-counties-from-1984---2020" class="nav-link" data-scroll-target="#wildfires-across-ca-counties-from-1984---2020">Wildfires Across CA Counties from 1984 - 2020</a></li>
+  </ul></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   </ul>
 </nav>
     </div>
@@ -129,7 +147,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"></h1>
+<h1 class="title">Examining California Wildfires</h1>
 <p class="subtitle lead">Project 2</p>
 </div>
 
@@ -137,19 +155,192 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kiana Fields </p>
+          </div>
+  </div>
     
   
     
   </div>
   
 
+
 </header>
 
-<section id="abstract" class="level2">
-<h2 class="anchored" data-anchor-id="abstract">Abstract</h2>
-</section>
+
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>California is known to have intense and severe wildfire seasons, that can have devastating impacts both to communities immediately impacted by the burn through destruction of property and lives lost, as well as far reaching consequences like smoke impacting other communities as well. In order to develop effective management strategies and effectively allocate resources, it is essential to understand the burden of these wildfire events.<br>
+<br>
+My project sought to address one aspect of this by considering the intensity and frequency of wildfires across California Counties, as measured by number of fires, acres burnt, and average fire size.</p>
+<p>To do this, I created spatio-temporal visualizations of wildfires in California, and compared frequency/intensity across counties.</p>
+<section id="research-question" class="level3 smaller">
+<h3 class="smaller anchored" data-anchor-id="research-question">Research Question</h3>
+<section id="how-does-the-burden-of-wildfires-compare-across-different-ca-counties-and-how-has-this-changed-over-time" class="level4">
+<h4 class="anchored" data-anchor-id="how-does-the-burden-of-wildfires-compare-across-different-ca-counties-and-how-has-this-changed-over-time">How does the burden of wildfires compare across different CA Counties, and how has this changed over time?</h4>
+<p>I wanted to compare the intensity and frequency of wildfires across CA Counties over the years to better understand this issue, particularly as this issue progresses.</p>
+<p>To do this, I created spatio-temporal visualizations of wildfires in California specifically considering:</p>
+<ul>
+<li><p>Frequency of fires: Number of fires counties experience in a year, Percent of total yearly fires occurring in each county</p></li>
+<li><p>Intensity of fires: Acres burnt in each county, Percent of total acres burnt in a year occuring in each county, average fire size (total acres burnt / number of fires)</p></li>
+</ul>
+</section>
+</section>
+<section id="the-data" class="level3">
+<h3 class="anchored" data-anchor-id="the-data">The Data:</h3>
+<ul>
+<li><p>fires_sf: wildfire perimeters from 1984 - 2020</p>
+<ul>
+<li>WFIGS Interagency Fire Perimeters data from the National Interagency Fire Center</li>
+</ul></li>
+<li><p>ca_sf: county boundaries</p>
+<ul>
+<li>from sf package</li>
+</ul></li>
+<li><p>PAD_CA_sf: land management agency boundaries</p>
+<ul>
+<li>U.S. Geological Survey (USGS) Gap Analysis Project (GAP) in 2022: Protected Areas Database of the United States</li>
+</ul></li>
+<li><p>fires_county: merged fire data and county boundaries</p></li>
+<li><p>fire_manage: merged fire data and land management agency boundaries</p></li>
+<li><p>county_fire_stats: wrangled with fires_county to make some calculations regarding frequency and intensity</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 251 features and 5 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -124.4096 ymin: 32.53444 xmax: -114.1312 ymax: 42.00948
+Geodetic CRS:  NAD83
+# A tibble: 251 × 6
+   county_name discover_yr fire_count total_acres avg_size
+   &lt;chr&gt;             &lt;dbl&gt;      &lt;int&gt;       &lt;dbl&gt;    &lt;dbl&gt;
+ 1 Alpine             1985          1       770      770  
+ 2 Alpine             1986          1      3383.    3383. 
+ 3 Alpine             1987          1      6354.    6354. 
+ 4 Alpine             1996          1        40       40  
+ 5 Alpine             2002          2     23620    11810  
+ 6 Alpine             2005          1        10       10  
+ 7 Alpine             2007          1        37.8     37.8
+ 8 Alpine             2011          1        81       81  
+ 9 Alpine             2015          1     17790    17790  
+10 Alpine             2017          2     18021.    9010. 
+# ℹ 241 more rows
+# ℹ 1 more variable: WKT &lt;MULTIPOLYGON [°]&gt;</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="approach" class="level2">
+<h2 class="anchored" data-anchor-id="approach">Approach</h2>
+<section id="shifting-from-land-management-agencies-to-counties" class="level3">
+<h3 class="anchored" data-anchor-id="shifting-from-land-management-agencies-to-counties">Shifting from Land Management Agencies to Counties</h3>
+<p>After some preliminary data exploration it became clear that comparing wildfires across land management agency would not yield useful results given that the vast majority of public lands are federally managed (91% of total acreage, followed by 4% state, 2% local government etc), and it followed that the vast majority of wildfires occurring on public lands happened on federal land (Federal Land: 510 fires, 74.3%. State Land: 120 fires, 17.4%). In a data set spanning 1984 - 2020, there were years in which no fires occurred on non-federal land. Analysis would not be meaningful or statistically significant as there is simply not enough data for wildfires on land managed by non-federal entities.</p>
+<p>Recognizing this, I shifted my project goal to be comparing wildfires across different CA Counties, for an analysis of changing wildfires over time.</p>
+<div style="display: flex; flex-direction: row;">
+<p><img src="PrerenderedPlots/pie_landmang_perclands.png" width="500" height="500"> <img src="PrerenderedPlots/pie_landmang_percfires.png" width="500" height="500"></p>
+</div>
+<p>The PAD_CA dataset is too large to push to github so I have included prerendered plots comparing land use and fire burden across land management agencies as photos. Code can be viewed in project repo.</p>
+</section>
+<section id="wildfires-across-california-from-1984---2020" class="level3">
+<h3 class="anchored" data-anchor-id="wildfires-across-california-from-1984---2020">Wildfires Across California from 1984 - 2020</h3>
+<p>I began by mapping wildfire perimeters and indicating counties experiencing wildfires to get a better sense of this issue.</p>
+<div style="display: flex; flex-direction: row;">
+<p><img src="PrerenderedPlots/anim_firescounties.gif" width="500" height="500"> <img src="PrerenderedPlots/anim_firescounties_grp.gif" width="500" height="500"></p>
+</div>
+<p>I then created line graphs considering fire count, acres burnt, and fire size in order to compare this issue across time.</p>
+<section id="fire-count" class="level5">
+<h5 class="anchored" data-anchor-id="fire-count">Fire Count</h5>
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/fire count all CA-1.png" class="img-fluid figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="acres-burnt" class="level5">
+<h5 class="anchored" data-anchor-id="acres-burnt">Acres Burnt</h5>
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/total acres all ca-1.png" class="img-fluid figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="average-fire-size" class="level5">
+<h5 class="anchored" data-anchor-id="average-fire-size">Average Fire Size</h5>
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/avg fire size all CA-1.png" class="img-fluid figure-img" width="384"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="wildfires-across-ca-counties-from-1984---2020" class="level3">
+<h3 class="anchored" data-anchor-id="wildfires-across-ca-counties-from-1984---2020">Wildfires Across CA Counties from 1984 - 2020</h3>
+<p>I then focused my analysis on county comparisons looking at the same variables, creating maps and line plots.</p>
+<section id="frequency-total-fires" class="level4">
+<h4 class="anchored" data-anchor-id="frequency-total-fires">Frequency: Total Fires</h4>
+<p>::: {style=“display: flex; flex-direction: row;”}<img src="PrerenderedPlots/anim_totfires_county.gif" width="500" height="500">:::</p>
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/top5 counties total fires line plot-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="intensity-total-acres-burnt" class="level4">
+<h4 class="anchored" data-anchor-id="intensity-total-acres-burnt">Intensity: Total Acres Burnt</h4>
+<div style="display: flex; flex-direction: row;">
+<p><img src="PrerenderedPlots/anim_totacres_county.gif" width="500" height="500"></p>
+</div>
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/top 5 counties total acres line plot-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="intensity-fire-size" class="level4">
+<h4 class="anchored" data-anchor-id="intensity-fire-size">Intensity: Fire Size</h4>
+<div style="display: flex; flex-direction: row;">
+<p><img src="PrerenderedPlots/anim_avgsize_county.gif" width="500" height="500"></p>
+</div>
+<div class="cell" data-quarto="true">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/top 5 counties average fire size line plot-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>Based on this data exploration and visualizations I concluded that the burden of wildfires is increasing across all of California. Some counties, like Lassen, Riverside, and San Diego, are particularly impacted, being in the top 5 counties experienced variables associated with wildfire burden. Comparing across time, it was clear that some years were particularly devestating fire seasons like 2018 and 2012. This makes sense historically as 2018 had large fires like the Carr Fire, Mendocino Complex Fire, and the Camp Fire while 2012 had the Rush Fire, and Ponderosa Fire. Limitations of my project includes a lack of data as some years had more data then others. Additionally my approach was limited as the burden of wildfires can also be measured in variables like destruction, lives lost, and the impact of smoke. Data regarding these variables was not included in my datasets but could be investigated in further analysis.<br>
+Further research using these datasets could include consideration of wildfire causes and analysis of how that has changed over time and how it compares across counties. This would give a more holistic understanding of this issue particularly as it applies to wildfire management strategies.</p>
 
 
 </section>
@@ -234,10 +425,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -247,8 +437,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -261,6 +460,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -304,6 +622,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -329,6 +648,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -389,6 +734,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 
